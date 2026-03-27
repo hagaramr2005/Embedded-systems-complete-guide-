@@ -1,0 +1,2000 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>شرح Embedded Systems - الشرح التأسيسي الكامل</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0e1a;
+  --surface: #111827;
+  --surface2: #1a2235;
+  --surface3: #1e2d45;
+  --accent: #00d4ff;
+  --accent2: #7c3aed;
+  --accent3: #10b981;
+  --accent4: #f59e0b;
+  --danger: #ef4444;
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+  --border: #2d3748;
+  --code-bg: #0d1117;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Cairo', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+
+/* ---- HEADER ---- */
+.hero {
+  background: linear-gradient(135deg, #0a0e1a 0%, #1a1040 50%, #0a1628 100%);
+  padding: 60px 40px;
+  text-align: center;
+  border-bottom: 2px solid var(--accent);
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at center, rgba(0,212,255,0.05) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero h1 {
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: var(--accent);
+  text-shadow: 0 0 40px rgba(0,212,255,0.4);
+  margin-bottom: 10px;
+}
+.hero p {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  max-width: 700px;
+  margin: 0 auto;
+}
+.badge {
+  display: inline-block;
+  background: rgba(0,212,255,0.1);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 4px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  margin: 10px 5px;
+}
+
+/* ---- LAYOUT ---- */
+.container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+/* ---- NAV ---- */
+.toc {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 30px;
+  margin: 40px auto;
+  max-width: 1100px;
+}
+.toc h2 { color: var(--accent); margin-bottom: 20px; font-size: 1.4rem; }
+.toc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 10px;
+}
+.toc-item {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  color: var(--text);
+  display: block;
+  font-size: 0.95rem;
+}
+.toc-item:hover { border-color: var(--accent); color: var(--accent); transform: translateX(-4px); }
+.toc-num { color: var(--accent2); font-weight: 700; margin-left: 8px; }
+
+/* ---- SECTIONS ---- */
+.section {
+  max-width: 1100px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+.section-header {
+  background: linear-gradient(135deg, var(--surface2), var(--surface3));
+  border: 1px solid var(--border);
+  border-right: 4px solid var(--accent);
+  border-radius: 12px;
+  padding: 25px 30px;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.section-num {
+  background: var(--accent);
+  color: #000;
+  font-weight: 900;
+  font-size: 1.5rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.section-title { font-size: 1.6rem; font-weight: 700; color: var(--accent); }
+.section-subtitle { color: var(--text-muted); font-size: 0.9rem; margin-top: 4px; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 25px 30px;
+  margin-bottom: 20px;
+}
+.card h3 {
+  color: var(--accent3);
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.card h4 { color: var(--accent4); margin: 15px 0 8px; font-size: 1rem; }
+.card p { color: var(--text); margin-bottom: 12px; }
+
+/* ---- CALLOUTS ---- */
+.callout {
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin: 16px 0;
+  border-right: 4px solid;
+}
+.callout-trap {
+  background: rgba(239,68,68,0.08);
+  border-color: var(--danger);
+}
+.callout-trap .callout-title { color: var(--danger); font-weight: 700; margin-bottom: 8px; }
+.callout-tip {
+  background: rgba(16,185,129,0.08);
+  border-color: var(--accent3);
+}
+.callout-tip .callout-title { color: var(--accent3); font-weight: 700; margin-bottom: 8px; }
+.callout-info {
+  background: rgba(0,212,255,0.06);
+  border-color: var(--accent);
+}
+.callout-info .callout-title { color: var(--accent); font-weight: 700; margin-bottom: 8px; }
+.callout-warn {
+  background: rgba(245,158,11,0.08);
+  border-color: var(--accent4);
+}
+.callout-warn .callout-title { color: var(--accent4); font-weight: 700; margin-bottom: 8px; }
+
+/* ---- TABLES ---- */
+.table-wrap { overflow-x: auto; margin: 20px 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+th {
+  background: var(--surface3);
+  color: var(--accent);
+  padding: 12px 16px;
+  text-align: right;
+  border: 1px solid var(--border);
+  font-weight: 700;
+  white-space: nowrap;
+}
+td {
+  padding: 11px 16px;
+  border: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: top;
+}
+tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+tr:hover td { background: rgba(0,212,255,0.04); }
+.td-yes { color: var(--accent3); font-weight: 600; }
+.td-no { color: var(--danger); }
+.td-highlight { color: var(--accent4); font-weight: 600; }
+
+/* ---- CODE ---- */
+.code-block {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  margin: 16px 0;
+  overflow-x: auto;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  direction: ltr;
+  text-align: left;
+}
+.code-comment { color: #6a9955; }
+.code-keyword { color: #569cd6; }
+.code-function { color: #dcdcaa; }
+.code-number { color: #b5cea8; }
+.code-string { color: #ce9178; }
+.code-type { color: #4ec9b0; }
+
+/* ---- COMPARISON HIGHLIGHT ---- */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 20px 0;
+}
+.compare-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px;
+}
+.compare-card.left { border-top: 3px solid var(--accent3); }
+.compare-card.right { border-top: 3px solid var(--danger); }
+.compare-card h4 { margin-bottom: 10px; font-size: 1rem; }
+.compare-card.left h4 { color: var(--accent3); }
+.compare-card.right h4 { color: var(--danger); }
+
+/* ---- MINI Q ---- */
+.mini-q {
+  background: rgba(124,58,237,0.1);
+  border: 1px solid var(--accent2);
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin: 20px 0;
+}
+.mini-q .q-title { color: var(--accent2); font-weight: 700; margin-bottom: 10px; }
+.mini-q .answer { color: var(--accent3); margin-top: 8px; display: none; }
+.mini-q:hover .answer { display: block; }
+
+/* ---- CHEATSHEET ---- */
+.cheat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+.cheat-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px;
+}
+.cheat-card h4 { color: var(--accent4); margin-bottom: 10px; font-size: 0.95rem; }
+.cheat-card ul { padding-right: 16px; }
+.cheat-card li { color: var(--text); margin-bottom: 6px; font-size: 0.9rem; }
+.cheat-card li::marker { color: var(--accent); }
+
+/* ---- DIVIDER ---- */
+.divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--border), transparent);
+  margin: 50px 0;
+}
+
+/* ---- NUMBERS BOX ---- */
+.numbers-box {
+  background: linear-gradient(135deg, rgba(0,212,255,0.05), rgba(124,58,237,0.05));
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  padding: 24px;
+  margin: 20px 0;
+}
+.numbers-box h3 { color: var(--accent); margin-bottom: 16px; }
+.num-row {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  gap: 16px;
+}
+.num-label { color: var(--text-muted); flex: 1; font-size: 0.9rem; }
+.num-value { color: var(--accent4); font-weight: 700; font-family: 'Fira Code', monospace; min-width: 120px; text-align: left; direction: ltr; }
+
+/* ---- SCROLL TOP ---- */
+.scroll-top {
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  background: var(--accent);
+  color: #000;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 1.4rem;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0,212,255,0.4);
+  z-index: 100;
+  transition: all 0.2s;
+}
+.scroll-top:hover { transform: scale(1.1); }
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.8rem; }
+  .compare-grid { grid-template-columns: 1fr; }
+  .section-header { flex-direction: column; text-align: center; }
+  th, td { padding: 8px; font-size: 0.82rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🔌 Embedded Systems</h1>
+  <p>الشرح التأسيسي الكامل — من الصفر لحد مستوى الامتحان الصعب</p>
+  <div>
+    <span class="badge">د. El-Habrouk</span>
+    <span class="badge">Alexandria University</span>
+    <span class="badge">Spring 2024/2025</span>
+    <span class="badge">بالعامية المصرية</span>
+  </div>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc container">
+  <h2>📋 فهرس المحتويات</h2>
+  <div class="toc-grid">
+    <a href="#s1" class="toc-item"><span class="toc-num">1</span> Embedded Systems Basics</a>
+    <a href="#s2" class="toc-item"><span class="toc-num">2</span> Sensors & Actuators</a>
+    <a href="#s3" class="toc-item"><span class="toc-num">3</span> Real-Time Systems</a>
+    <a href="#s4" class="toc-item"><span class="toc-num">4</span> Memory Types</a>
+    <a href="#s5" class="toc-item"><span class="toc-num">5</span> CPU & Processor</a>
+    <a href="#s6" class="toc-item"><span class="toc-num">6</span> Performance Criteria</a>
+    <a href="#s7" class="toc-item"><span class="toc-num">7</span> DMA & JTAG</a>
+    <a href="#s8" class="toc-item"><span class="toc-num">8</span> Kernel vs OS</a>
+    <a href="#s9" class="toc-item"><span class="toc-num">9</span> IoT Basics</a>
+    <a href="#s10" class="toc-item"><span class="toc-num">10</span> Communication Protocols</a>
+    <a href="#s11" class="toc-item"><span class="toc-num">11</span> Arduino vs ESP8266 vs ESP32</a>
+    <a href="#s12" class="toc-item"><span class="toc-num">12</span> FPGA vs ASIC vs DSP vs GPP</a>
+    <a href="#s13" class="toc-item"><span class="toc-num">13</span> Arduino Programming</a>
+    <a href="#s14" class="toc-item"><span class="toc-num">14</span> كيف يفكر الدكتور؟</a>
+    <a href="#s15" class="toc-item"><span class="toc-num">15</span> Cheat Sheet النهائي</a>
+  </div>
+</div>
+
+<!-- ===================== SECTION 1 ===================== -->
+<div class="section" id="s1">
+  <div class="section-header">
+    <div class="section-num">1</div>
+    <div>
+      <div class="section-title">Embedded Systems Basics</div>
+      <div class="section-subtitle">الأساس اللي كل حاجة بتبدأ منه</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🤔 يعني إيه Embedded System أصلاً؟</h3>
+    <p>تخيلي إنك بتحطي كمبيوتر صغير جوّا جهاز عشان يعمل <strong>وظيفة واحدة محددة</strong> — مش أي وظيفة، وظيفة معينة جداً. ده هو الـ Embedded System.</p>
+    <p>كلمة <strong>Embedded</strong> معناها "مضمّن" أو "مدفون جوّا". فالنظام ده مش واضح للمستخدم — إنت مش شايفه، لكنه شغّال جوّا الجهاز بيتحكم فيه.</p>
+    
+    <div class="callout callout-info">
+      <div class="callout-title">📌 التعريف الأكاديمي</div>
+      <p>An Embedded System is a dedicated computer system designed to perform one or a few specific functions, often with real-time constraints, embedded within a larger mechanical or electrical system.</p>
+    </div>
+
+    <h4>أمثلة من حياتك اليومية:</h4>
+    <p>الميكروويف عندك في البيت — فيه كمبيوتر صغير جوّاه بيتحكم في درجة الحرارة والوقت. التلفزيون الريموت — فيه chip بتترجم الإشارات. المكيف — بيحس بالحرارة ويتحكم في المحرك. الغسالة — بتتحكم في المراحل والوقت والماء.</p>
+    <p>أمثلة صناعية: روبوتات المصانع، أنظمة الطيران، السيارات (نظام الفرامل ABS، الـ Airbag). طبية: أجهزة ضبط القلب (Pacemaker)، ماكينات الأشعة.</p>
+  </div>
+
+  <div class="card">
+    <h3>⚖️ الفرق بين Embedded System و General Purpose Computer</h3>
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>الخاصية</th>
+          <th>Embedded System</th>
+          <th>General Purpose Computer</th>
+        </tr>
+        <tr>
+          <td>الوظيفة</td>
+          <td>وظيفة واحدة أو محددة</td>
+          <td>أي وظيفة — متعدد الأغراض</td>
+        </tr>
+        <tr>
+          <td>المرونة</td>
+          <td>مش مرن — مبرمج لمهمة محددة</td>
+          <td>مرن جداً — بتنصّب عليه أي برنامج</td>
+        </tr>
+        <tr>
+          <td>الحجم والسعر</td>
+          <td>صغير وأرخص</td>
+          <td>أكبر وأغلى</td>
+        </tr>
+        <tr>
+          <td>الطاقة</td>
+          <td>بيستهلك طاقة أقل بكتير</td>
+          <td>بيستهلك طاقة أكثر</td>
+        </tr>
+        <tr>
+          <td>Real-Time</td>
+          <td>غالباً بيكون real-time</td>
+          <td>مش شرط</td>
+        </tr>
+        <tr>
+          <td>OS</td>
+          <td>مش لازم يكون فيه OS</td>
+          <td>دايماً محتاج OS</td>
+        </tr>
+        <tr>
+          <td>المعالج</td>
+          <td>Microcontroller أو processor خاص</td>
+          <td>General purpose processor (Intel, AMD)</td>
+        </tr>
+        <tr>
+          <td>Interface</td>
+          <td>غالباً مش محتاج keyboard/screen</td>
+          <td>محتاج input/output كاملة</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏗️ مكونات Embedded System الأساسية</h3>
+    <p><strong>Input → Processing → Output</strong> — دي المعادلة البسيطة لأي نظام.</p>
+    <p><strong>Input:</strong> Sensors (حرارة، ضغط، ضوء، صوت)، Buttons، Keyboard، Camera.</p>
+    <p><strong>Processing:</strong> Microcontroller أو Processor — ده المخ اللي بياخد القرار.</p>
+    <p><strong>Output:</strong> Actuators (موتور، صمام، ضوء)، Display، Speaker.</p>
+    <p><strong>Memory:</strong> Flash (الكود)، RAM (البيانات المؤقتة)، EEPROM (الإعدادات).</p>
+    <p><strong>Power Supply:</strong> مصدر الطاقة — بطارية أو كهرباء.</p>
+    <p><strong>Communication:</strong> UART, SPI, I2C, Wi-Fi, Bluetooth.</p>
+  </div>
+
+  <div class="card">
+    <h3>❓ أسئلة شائعة عن تعريف Embedded Systems</h3>
+    <p><strong>هل Embedded System دايماً صغير؟</strong> لأ! ممكن يكون كبير جداً زي نظام التحكم في محطة كهرباء. الحجم مش المعيار — المعيار هو إن وظيفته محددة.</p>
+    <p><strong>هل لازم يكون Real-Time؟</strong> لأ، مش كل embedded system هو real-time. لكن كتير منهم بيكونوا real-time لأن طبيعة عملهم بتطلب استجابة في وقت محدد.</p>
+    <p><strong>هل لازم يكون فيه OS؟</strong> لأ! ممكن يشتغل بدون OS — ده اللي بنسميه Bare-Metal Programming. بتكتب الكود مباشرة على الـ hardware.</p>
+  </div>
+
+  <div class="card">
+    <h3>🔄 System Life Cycle — دورة حياة النظام</h3>
+    <p>من المحاضرات: النظام بيمر بـ 5 مراحل:</p>
+    <ol style="padding-right:20px; margin-top:10px;">
+      <li style="margin-bottom:8px;"><strong>Birth (الميلاد):</strong> الفكرة والمتطلبات — إيه اللي النظام محتاج يعمله؟</li>
+      <li style="margin-bottom:8px;"><strong>Design (التصميم):</strong> تصميم الـ hardware والـ software</li>
+      <li style="margin-bottom:8px;"><strong>Growth (النمو):</strong> التطوير والاختبار</li>
+      <li style="margin-bottom:8px;"><strong>Maturity (النضج):</strong> الإنتاج والاستخدام الفعلي</li>
+      <li style="margin-bottom:8px;"><strong>Decline (الانحدار):</strong> الجهاز بيتقادم وبيتستبدل بأحدث</li>
+    </ol>
+  </div>
+
+  <div class="callout callout-trap">
+    <div class="callout-title">⚠️ TRAPS شائعة في الامتحانات</div>
+    <p>❌ "Embedded Systems دايماً بتشتغل بدون OS" — غلط! بعضها بيستخدم RTOS أو حتى Linux.</p>
+    <p>❌ "Embedded Systems دايماً صغيرة" — غلط! الحجم مش المعيار.</p>
+    <p>❌ "Embedded Systems دايماً Real-Time" — غلط! مش لازم.</p>
+    <p>✅ المعيار الوحيد: وظيفة محددة (dedicated/specific function).</p>
+  </div>
+</div>
+
+<!-- ===================== SECTION 2 ===================== -->
+<div class="section" id="s2">
+  <div class="section-header">
+    <div class="section-num">2</div>
+    <div>
+      <div class="section-title">Sensors & Actuators</div>
+      <div class="section-subtitle">العيون والأيدي للنظام المدمج</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>👁️ Sensor يعني إيه؟</h3>
+    <p><strong>Sensor</strong> هو جهاز بيحوّل <strong>كمية فيزيائية</strong> (حرارة، ضوء، ضغط، صوت...) إلى <strong>إشارة كهربائية</strong> يقدر النظام يفهمها. يعني هو <strong>INPUT</strong> للنظام.</p>
+    <p>فكّري فيه كـ"عين" أو "حاسّة" للنظام — بيحسّ بالبيئة المحيطة.</p>
+    
+    <h4>أمثلة كتيرة على Sensors:</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>الـ Sensor</th><th>بيحول إيه؟</th><th>مثال استخدام</th></tr>
+        <tr><td>Temperature Sensor</td><td>حرارة → فولت</td><td>الثرموستات، المكيف</td></tr>
+        <tr><td>Light Sensor (LDR)</td><td>ضوء → مقاومة → فولت</td><td>إضاءة الشوارع التلقائية</td></tr>
+        <tr><td>Pressure Sensor</td><td>ضغط → فولت</td><td>قياس ضغط الدم، إطارات السيارة</td></tr>
+        <tr><td>Ultrasonic Sensor</td><td>مسافة → وقت → رقم</td><td>Parking sensors في السيارات</td></tr>
+        <tr><td>PIR Motion Sensor</td><td>حركة الحرارة → إشارة</td><td>كاميرات الأمان، إضاءة الغرف</td></tr>
+        <tr><td>Microphone</td><td>صوت → فولت</td><td>التعرف على الصوت</td></tr>
+        <tr><td>Accelerometer</td><td>تسارع → فولت</td><td>Airbag، هاتف بيعرف اتجاهه</td></tr>
+        <tr><td>Potentiometer</td><td>وضع المقبض → فولت</td><td>التحكم في الصوت، السرعة</td></tr>
+        <tr><td>Push Button</td><td>ضغط → HIGH/LOW</td><td>كل لوحة مفاتيح</td></tr>
+        <tr><td>Hall Effect Sensor</td><td>مجال مغناطيسي → إشارة</td><td>قياس سرعة المحرك</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚙️ Actuator يعني إيه؟</h3>
+    <p><strong>Actuator</strong> هو جهاز بيحوّل <strong>إشارة كهربائية</strong> من النظام إلى <strong>حركة أو فعل فيزيائي</strong>. يعني هو <strong>OUTPUT</strong> للنظام.</p>
+    <p>فكّري فيه كـ"يد" للنظام — بيترجم قرار المعالج لفعل حقيقي في الدنيا.</p>
+    
+    <h4>أمثلة كتيرة على Actuators:</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>الـ Actuator</th><th>بيحول إيه؟</th><th>مثال استخدام</th></tr>
+        <tr><td>DC Motor</td><td>كهرباء → دوران</td><td>روبوتات، سيارات تحكم عن بعد</td></tr>
+        <tr><td>Servo Motor</td><td>إشارة PWM → زاوية محددة</td><td>ذراع الروبوت، بوابات</td></tr>
+        <tr><td>Stepper Motor</td><td>نبضات → خطوات دقيقة</td><td>الطابعات 3D</td></tr>
+        <tr><td>LED</td><td>كهرباء → ضوء</td><td>إشارات، شاشات</td></tr>
+        <tr><td>Buzzer/Speaker</td><td>كهرباء → صوت</td><td>تنبيهات، مكبرات صوت</td></tr>
+        <tr><td>Relay</td><td>إشارة ضعيفة → تحكم في تيار قوي</td><td>التحكم في الأجهزة الكبيرة</td></tr>
+        <tr><td>Solenoid Valve</td><td>كهرباء → فتح/إغلاق صمام</td><td>التحكم في تدفق الماء</td></tr>
+        <tr><td>LCD Display</td><td>بيانات → نص مرئي</td><td>شاشات الأجهزة</td></tr>
+        <tr><td>Heater</td><td>كهرباء → حرارة</td><td>التدفئة التلقائية</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📊 Analog vs Digital Sensors</h3>
+    <div class="compare-grid">
+      <div class="compare-card left">
+        <h4>Analog Sensor</h4>
+        <p>بيدي إشارة متواصلة (continuous) — زي جهد بيتغير من 0 إلى 5V.</p>
+        <p>مثال: Potentiometer, Temperature sensor (LM35), Microphone</p>
+        <p>محتاج ADC (Analog to Digital Converter) عشان المعالج يقدر يقرأه.</p>
+      </div>
+      <div class="compare-card right">
+        <h4>Digital Sensor</h4>
+        <p>بيدي إشارة رقمية (HIGH أو LOW) — 0 أو 1 بس.</p>
+        <p>مثال: Push Button, PIR Motion Sensor, Digital Temperature Sensor (DHT11)</p>
+        <p>مش محتاج ADC — المعالج بيقرأه مباشرة.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔋 Active vs Passive Sensors</h3>
+    <p><strong>Active Sensor:</strong> محتاج مصدر طاقة خارجي عشان يشتغل. مثال: Ultrasonic sensor (بيبعت موجات صوت ويسمع الصدى).</p>
+    <p><strong>Passive Sensor:</strong> بيشتغل بالطاقة الموجودة في الظاهرة اللي بيحسها من غير مصدر طاقة إضافي. مثال: Thermocouple (بيوّلد فولت من فرق الحرارة مباشرة).</p>
+  </div>
+
+  <div class="callout callout-trap">
+    <div class="callout-title">⚠️ الخطأ الأكتر شيوعاً في الامتحانات</div>
+    <p>❌ بعض الطلبة بيخلطوا بين Sensor و Actuator.</p>
+    <p>✅ القاعدة البسيطة: <strong>Sensor = Input (بياخد من البيئة)</strong> — <strong>Actuator = Output (بيأثر على البيئة)</strong></p>
+    <p>⚠️ السؤال الرخم: "Potentiometer هو sensor ولا actuator؟" — هو <strong>Sensor</strong> لأنه بيحول وضع المقبض (physical) لفولت (electrical). لكن في سيناريو تاني ممكن يستخدم للتحكم (variable resistor) — المهم اللي بتكلموا عنه في السياق.</p>
+  </div>
+</div>
+
+<!-- ===================== SECTION 3 ===================== -->
+<div class="section" id="s3">
+  <div class="section-header">
+    <div class="section-num">3</div>
+    <div>
+      <div class="section-title">Real-Time Systems</div>
+      <div class="section-subtitle">مش معناها "سريع" — معناها "في الوقت المحدد"</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⏱️ Real-Time يعني إيه فعلاً؟</h3>
+    <p>أكبر غلطة ممكن تعمليها إنك تقولي "Real-Time = سريع". ده <strong>غلط 100%</strong>.</p>
+    <p><strong>Real-Time</strong> يعني إن النظام لازم ينهي مهمته قبل أو في وقت معين اسمه <strong>Deadline</strong>. مش المهم تكون سريع — المهم تكون <strong>predictable ومحدد</strong>.</p>
+    
+    <div class="callout callout-info">
+      <div class="callout-title">💡 مثال توضيحي</div>
+      <p>نظام Airbag في السيارة — لو حصل حادثة، الـ airbag لازم يتفتح في <strong>30 millisecond</strong> بالظبط. لو اتفتح في 100ms — متأخر ومش نافع. لو اتفتح في 20ms — برضو ممكن يكون مشكلة. <strong>الـ Timing المحدد هو الأساس</strong>.</p>
+    </div>
+
+    <h4>مفاهيم أساسية:</h4>
+    <p><strong>Deadline:</strong> الوقت اللي لازم المهمة تخلص فيه. لو المهمة خلصت بعده — اعتبرها فشلت.</p>
+    <p><strong>Determinism:</strong> إن النظام يتصرف بطريقة <strong>متوقعة ومحددة</strong> في كل مرة — مش عشوائي. أنت عارف إن المهمة دي هتاخد من X لـ Y time بالظبط.</p>
+  </div>
+
+  <div class="card">
+    <h3>🔴🟡 Hard Real-Time vs Soft Real-Time</h3>
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>الخاصية</th>
+          <th>Hard Real-Time</th>
+          <th>Soft Real-Time</th>
+        </tr>
+        <tr>
+          <td>الـ Deadline</td>
+          <td>صارم جداً — لازم يتحقق 100%</td>
+          <td>مهم لكن لو فات مش كارثة</td>
+        </tr>
+        <tr>
+          <td>لو فاتت الـ Deadline؟</td>
+          <td>فشل كارثي — ممكن يسبب ضرر أو وفاة</td>
+          <td>Performance بتقل بس النظام بيكمل</td>
+        </tr>
+        <tr>
+          <td>مستوى الخطورة</td>
+          <td>High — Critical Systems</td>
+          <td>Lower — مقبول بعض التأخير</td>
+        </tr>
+        <tr>
+          <td>أمثلة</td>
+          <td>Airbag، Pacemaker، Flight control، ABS Brakes</td>
+          <td>Video streaming، Online gaming، Email system</td>
+        </tr>
+        <tr>
+          <td>الـ RTOS المستخدم</td>
+          <td>Hard Real-Time RTOS (guarantees deadlines)</td>
+          <td>Soft Real-Time RTOS أو حتى General OS</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="callout callout-trap">
+      <div class="callout-title">⚠️ TRAP من الامتحان الفعلي (سؤال 42-45)</div>
+      <p>السؤال: "Which best describes a hard real-time system?" — الإجابة: <strong>Missing a deadline may lead to catastrophic consequences</strong>.</p>
+      <p>السؤال: "In a soft real-time system, what happens if a deadline is missed?" — الإجابة: <strong>The performance degrades, but the system continues functioning</strong>.</p>
+      <p>❌ "Hard Real-Time is more flexible" — غلط، العكس هو الصح.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🖥️ RTOS — Real-Time Operating System</h3>
+    <p><strong>RTOS</strong> هو نوع خاص من الـ Operating Systems مصمم خصيصاً للـ Real-Time Systems.</p>
+    <p>الـ RTOS بيضمن إن المهام بتتنفذ في الوقت الصح — بيعمل Scheduling للـ tasks بطريقة محددة.</p>
+    <p>أمثلة على RTOS: FreeRTOS, VxWorks, QNX, μC/OS-II.</p>
+    <p><strong>Hard Real-Time RTOS</strong> بيضمن إن المهام الحرجة هتخلص في وقتها — ده اللي بيُستخدم في Airbag و Flight Control.</p>
+    <p>الـ RTOS مش ضروري في كل embedded system — بعضها Bare-Metal (من غير OS خالص).</p>
+  </div>
+
+  <div class="card">
+    <h3>🎯 سيناريوهات للتفسير</h3>
+    <p><strong>سيناريو 1:</strong> نظام monitoring لدرجة حرارة في مصنع — بيقيس كل ثانية ويعمل alert لو اتعدى حد معين. ده Soft Real-Time لأن لو تأخرت القراءة ثانية مش كارثة.</p>
+    <p><strong>سيناريو 2:</strong> نظام تحكم في سرعة محرك طائرة — لازم يستجيب في microseconds. ده Hard Real-Time لأن أي تأخير يعني كارثة.</p>
+    <p><strong>سيناريو 3:</strong> Audio streaming — لو الصوت بفّ للحظة الـ Quality بتقل بس الأغنية بتكمل. ده Soft Real-Time.</p>
+  </div>
+</div>
+
+<!-- ===================== SECTION 4 ===================== -->
+<div class="section" id="s4">
+  <div class="section-header">
+    <div class="section-num">4</div>
+    <div>
+      <div class="section-title">Memory Types</div>
+      <div class="section-subtitle">الذاكرة بكل أنواعها — RAM وROM وكل حاجة بينهم</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🗂️ Volatile vs Non-Volatile — المفهوم الأساسي</h3>
+    <p><strong>Volatile Memory:</strong> بتمسح لما الكهرباء بتقفل. زي الـ RAM — بيحفظ البيانات طول ما فيه طاقة بس. مثال: RAM في الكمبيوتر، لو قطّعت الضوء البيانات اللي في الـ RAM راحت.</p>
+    <p><strong>Non-Volatile Memory:</strong> بتفضل شايلة البيانات حتى لو قطّعت الكهرباء. زي الـ Flash، EEPROM، ROM. مثال: الكود في الـ Arduino محفوظ في Flash — حتى لو فصلت الكهرباء الكود لسه موجود.</p>
+  </div>
+
+  <div class="card">
+    <h3>📊 جدول المقارنة الكامل لأنواع الذاكرة</h3>
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>النوع</th>
+          <th>Volatile؟</th>
+          <th>قابل للكتابة؟</th>
+          <th>كيف بتمسحه؟</th>
+          <th>السرعة</th>
+          <th>الاستخدام في Embedded</th>
+        </tr>
+        <tr>
+          <td>SRAM</td>
+          <td class="td-yes">Volatile</td>
+          <td class="td-yes">نعم</td>
+          <td>تلقائي (بالكهرباء)</td>
+          <td class="td-highlight">أسرع RAM</td>
+          <td>Cache, Registers</td>
+        </tr>
+        <tr>
+          <td>DRAM</td>
+          <td class="td-yes">Volatile</td>
+          <td class="td-yes">نعم</td>
+          <td>تلقائي + يحتاج Refresh</td>
+          <td>أبطأ من SRAM</td>
+          <td>Main RAM في الكمبيوتر</td>
+        </tr>
+        <tr>
+          <td>SDRAM</td>
+          <td class="td-yes">Volatile</td>
+          <td class="td-yes">نعم</td>
+          <td>تلقائي + Refresh</td>
+          <td>أسرع من DRAM عادي</td>
+          <td>RAM للأنظمة المعقدة</td>
+        </tr>
+        <tr>
+          <td>DDR RAM</td>
+          <td class="td-yes">Volatile</td>
+          <td class="td-yes">نعم</td>
+          <td>تلقائي</td>
+          <td class="td-highlight">ضعف SDRAM</td>
+          <td>كمبيوترات حديثة</td>
+        </tr>
+        <tr>
+          <td>ROM</td>
+          <td class="td-no">Non-Volatile</td>
+          <td class="td-no">لأ (بعد التصنيع)</td>
+          <td>مستحيل</td>
+          <td>متوسط</td>
+          <td>Firmware ثابت في المصنع</td>
+        </tr>
+        <tr>
+          <td>PROM</td>
+          <td class="td-no">Non-Volatile</td>
+          <td>مرة واحدة بس</td>
+          <td>مستحيل</td>
+          <td>متوسط</td>
+          <td>برمجة لمرة واحدة</td>
+        </tr>
+        <tr>
+          <td>EPROM</td>
+          <td class="td-no">Non-Volatile</td>
+          <td class="td-yes">نعم (بالـ UV)</td>
+          <td>UV Light</td>
+          <td>متوسط</td>
+          <td>قديم — prototyping</td>
+        </tr>
+        <tr>
+          <td>EEPROM</td>
+          <td class="td-no">Non-Volatile</td>
+          <td class="td-yes">نعم (كهربائياً)</td>
+          <td>كهربائياً (Byte by Byte)</td>
+          <td>بطيء نسبياً</td>
+          <td>حفظ الإعدادات</td>
+        </tr>
+        <tr>
+          <td>Flash</td>
+          <td class="td-no">Non-Volatile</td>
+          <td class="td-yes">نعم (بالـ Block)</td>
+          <td>كهربائياً (Block)</td>
+          <td class="td-highlight">أسرع من EEPROM</td>
+          <td>حفظ الـ Firmware/Code</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧠 ليه SRAM أسرع من DRAM؟</h3>
+    <p><strong>SRAM (Static RAM)</strong> بيستخدم Flip-Flops عشان يخزن البيانات. الـ Flip-Flop بيفضل شايل البيانات طول ما فيه كهرباء من غير ما يحتاج Refresh. أسرع وأوثوقية أعلى.</p>
+    <p><strong>DRAM (Dynamic RAM)</strong> بيستخدم Capacitors عشان يخزن البيانات. الـ Capacitor بيفضل بيتفرّغ تدريجياً، فمحتاج Refresh كل حوالي 64ms عشان يحتفظ بالبيانات. ده بيأخر العملية.</p>
+    <p><strong>لكن DRAM أرخص وأكبر كثافة (density)</strong> — يعني في نفس المساحة تقدر تحط ذاكرة أكبر بكتير. عشان كده بيتستخدم للـ Main RAM في الكمبيوتر.</p>
+  </div>
+
+  <div class="card">
+    <h3>💡 Flash vs EEPROM — الفرق الدقيق</h3>
+    <p><strong>Flash</strong> هو في الأصل نوع متطور من الـ EEPROM — بس الفرق في طريقة المسح:</p>
+    <p>EEPROM بيمسح <strong>Byte by Byte</strong> — بطيء جداً لكن دقيق.</p>
+    <p>Flash بيمسح <strong>Block by Block (Sector)</strong> — أسرع بكتير.</p>
+    <p>ليه Flash بتستخدم للـ Firmware؟ لأن الكود بيتكتب مرة واحدة كبيرة، ومحتاجين سرعة في القراءة.</p>
+    <p>ليه EEPROM بتستخدم للإعدادات؟ لأن الإعدادات بتتغير byte by byte (مثلاً تغيير إعداد واحد مش محتاج تمسح كل حاجة).</p>
+  </div>
+
+  <div class="numbers-box">
+    <h3>🔢 أرقام مهمة لازم تتحفظ — ATmega328 (Arduino Uno)</h3>
+    <div class="num-row"><span class="num-label">Flash Memory (لتخزين الكود)</span><span class="num-value">32 KB</span></div>
+    <div class="num-row"><span class="num-label">SRAM (للـ variables أثناء التشغيل)</span><span class="num-value">2 KB</span></div>
+    <div class="num-row"><span class="num-label">EEPROM (للإعدادات)</span><span class="num-value">1 KB</span></div>
+    <div class="num-row"><span class="num-label">نوع الذاكرة المستخدمة للكود</span><span class="num-value">Flash Memory</span></div>
+  </div>
+
+  <div class="callout callout-trap">
+    <div class="callout-title">⚠️ TRAPS في Memory</div>
+    <p>❌ "Flash memory هي نوع مختلف تماماً عن EEPROM" — غلط! Flash هو نوع من EEPROM لكن أسرع وبيمسح بالـ Block.</p>
+    <p>❌ "ROM بتقدر تتبرمج بعد التصنيع" — غلط! ROM بتتبرمج في وقت التصنيع بس.</p>
+    <p>✅ PROM = برمجها مرة واحدة بعد التصنيع (One Time Programmable).</p>
+    <p>✅ EPROM = بتمسحها بـ UV Light وتبرمجها تاني.</p>
+    <p>✅ EEPROM = بتمسحها كهربائياً Byte by Byte.</p>
+    <p>✅ Flash = بتمسحها كهربائياً Block by Block (أسرع).</p>
+  </div>
+</div>
+
+<!-- ===================== SECTION 5 ===================== -->
+<div class="section" id="s5">
+  <div class="section-header">
+    <div class="section-num">5</div>
+    <div>
+      <div class="section-title">CPU & Processor Components</div>
+      <div class="section-subtitle">مخ النظام — ALU والـ Control Unit والـ Registers</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧠 CPU يعني إيه؟</h3>
+    <p><strong>CPU (Central Processing Unit)</strong> هو مخ الكمبيوتر أو النظام. بيشتغل على تنفيذ التعليمات.</p>
+    <p><strong>Processor</strong> في الغالب بيعني نفس الـ CPU — بس في سياق Embedded Systems، الـ Microcontroller بيكون فيه CPU + Memory + Peripherals كلهم على نفس الـ Chip.</p>
+    <p>من الامتحان: "The brain of any computer system is... CPU (Central Processing Unit)".</p>
+  </div>
+
+  <div class="card">
+    <h3>🏗️ مكونات الـ CPU</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>المكوّن</th><th>اسمه الكامل</th><th>وظيفته</th></tr>
+        <tr>
+          <td>ALU</td>
+          <td>Arithmetic Logic Unit</td>
+          <td>بيعمل العمليات الحسابية (+, -, *, /) والمنطقية (AND, OR, NOT, XOR)</td>
+        </tr>
+        <tr>
+          <td>Control Unit</td>
+          <td>—</td>
+          <td>بيتحكم في تسلسل التعليمات — بيجيب التعليمة، يفككها، ويوجه الـ ALU</td>
+        </tr>
+        <tr>
+          <td>Registers</td>
+          <td>—</td>
+          <td>مخازن صغيرة جداً جوا الـ CPU — أسرع حاجة في النظام</td>
+        </tr>
+        <tr>
+          <td>PC</td>
+          <td>Program Counter</td>
+          <td>بيحفظ عنوان التعليمة الجاية اللي هتتنفذ</td>
+        </tr>
+        <tr>
+          <td>IR</td>
+          <td>Instruction Register</td>
+          <td>بيحفظ التعليمة الحالية اللي بتتنفذ دلوقتي</td>
+        </tr>
+        <tr>
+          <td>Status Register</td>
+          <td>Flags Register</td>
+          <td>بيحفظ نتيجة العمليات (Zero, Carry, Overflow)</td>
+        </tr>
+      </table>
+    </div>
+    <div class="callout callout-info">
+      <div class="callout-title">📌 من الامتحان</div>
+      <p>"Which of the following are the two main components of the CPU?" — الإجابة: <strong>Control Unit and ALU</strong>.</p>
+      <p>"The control unit of a microprocessor..." — لأ بتخزن data ولأ بتعمل arithmetic — بيتحكم في تسلسل العمليات.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🚩 Flags — الأعلام في الـ Status Register</h3>
+    <p><strong>Zero Flag (Z):</strong> بيتشعل (=1) لو نتيجة العملية كانت صفر. مثال: 5-5 = 0 → Zero Flag = 1.</p>
+    <p><strong>Carry Flag (C):</strong> بيتشعل لو فيه Carry (حاجة زيادة اتولدت من عملية الجمع) أو Borrow (في الطرح). مثال: 255+1 في 8-bit → Carry = 1.</p>
+    <p><strong>Overflow Flag (V):</strong> بيتشعل لو النتيجة اتعدت المدى المسموح به للأرقام الموقعة (Signed numbers). مثال: أكبر رقم موجب + 1 → Overflow.</p>
+  </div>
+
+  <div class="card">
+    <h3>🔄 Fetch / Decode / Execute Cycle</h3>
+    <p>كل تعليمة بتمر بـ 3 مراحل:</p>
+    <p><strong>1. Fetch:</strong> الـ Control Unit بياخد التعليمة من الذاكرة بناءً على الـ PC، وبيحفظها في الـ Instruction Register.</p>
+    <p><strong>2. Decode:</strong> الـ Control Unit بيفكك التعليمة عشان يفهم هتعمل إيه (جمع؟ طرح؟ jump؟).</p>
+    <p><strong>3. Execute:</strong> الـ ALU بينفذ التعليمة والنتيجة بتتحفظ في Register أو Memory.</p>
+    <p>بعدها الـ PC بيتزود (+1 أو حسب الـ instruction) وبنرجع لـ Fetch تاني.</p>
+  </div>
+
+  <div class="card">
+    <h3>🔢 Integer Processing vs Floating Point Processing</h3>
+    <p><strong>Integer Processing:</strong> الـ ALU العادي بيتعامل مع أرقام صحيحة (integers). سريع جداً.</p>
+    <p><strong>Floating Point Processing:</strong> الأرقام الكسرية (زي 3.14) محتاجة معالجة أصعب. في معالجات كتير فيه وحدة خاصة اسمها <strong>FPU (Floating Point Unit)</strong> أو Floating Point ALU.</p>
+    <p>الـ FPU بتسرّع العمليات الرياضية الكسرية — مهمة جداً في تطبيقات Signal Processing، رسومات، AI.</p>
+  </div>
+</div>
+
+<!-- ===================== SECTION 6 ===================== -->
+<div class="section" id="s6">
+  <div class="section-header">
+    <div class="section-num">6</div>
+    <div>
+      <div class="section-title">Performance Criteria</div>
+      <div class="section-subtitle">MIPS و FLOPS — إزاي بنقيس أداء المعالج</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📏 MIPS — Millions of Instructions Per Second</h3>
+    <p><strong>MIPS</strong> بيقيس عدد التعليمات اللي المعالج بينفذها في الثانية، بالمليون.</p>
+    <p>مثال: معالج بـ 100 MIPS يعني بينفذ 100,000,000 تعليمة في الثانية.</p>
+    <p><strong>هل MIPS دايماً مقياس عادل؟</strong> لأ! لأن مش كل التعليمات متساوية. تعليمة جمع أسرع بكتير من تعليمة قسمة. ممكن معالج يعمل MIPS عالي لكن أداؤه الفعلي على تطبيق معين أقل من معالج تاني أبطأ في MIPS.</p>
+    <p>MIPS مناسب لقياس <strong>Integer Processing</strong>.</p>
+  </div>
+
+  <div class="card">
+    <h3>🔢 FLOPS — Floating Point Operations Per Second</h3>
+    <p><strong>FLOPS</strong> بيقيس عدد العمليات الكسرية (Floating Point) اللي المعالج بيعملها في الثانية.</p>
+    <p>GFLOPS = مليار، TFLOPS = تريليون FLOPS.</p>
+    <p>FLOPS بيستخدم لقياس أداء Supercomputers، Graphics Cards، AI processors، DSP systems.</p>
+    <p>لو التطبيق بتاعك فيه حسابات رياضية كتير (زي معالجة الصور أو الصوت) → استخدم FLOPS.</p>
+  </div>
+
+  <div class="card">
+    <h3>⚖️ MIPS vs FLOPS</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>المقياس</th><th>MIPS</th><th>FLOPS</th></tr>
+        <tr><td>يقيس</td><td>تعليمات عامة (integers)</td><td>عمليات كسرية فقط</td></tr>
+        <tr><td>يُستخدم في</td><td>General embedded systems</td><td>DSP, AI, Graphics, Supercomputers</td></tr>
+        <tr><td>عادل دايماً؟</td><td class="td-no">لأ — مش كل instructions متساوية</td><td>أعدل لتطبيقات الـ Floating Point</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SECTION 7 ===================== -->
+<div class="section" id="s7">
+  <div class="section-header">
+    <div class="section-num">7</div>
+    <div>
+      <div class="section-title">DMA & JTAG</div>
+      <div class="section-subtitle">نقل البيانات بذكاء + أداة الـ Debugging</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🚀 DMA — Direct Memory Access</h3>
+    <p><strong>DMA (Direct Memory Access)</strong> هو جهاز خاص بيسمح للـ Peripherals إنها تنقل بيانات من وإلى الـ Memory <strong>مباشرة من غير ما الـ CPU يتدخل</strong>.</p>
+    <p><strong>المشكلة بدون DMA:</strong> لو محتاج تنقل 1MB بيانات من كاميرا للذاكرة، الـ CPU هيفضل شغّال كله بالنقل ده — وهو شغّال بده مش هيقدر يعمل حاجة تانية.</p>
+    <p><strong>الحل مع DMA:</strong> الـ DMA Controller بياخد مهمة النقل — الـ CPU بيقوله "انقل من X لـ Y" وبعدين الـ CPU يروح يعمل حاجات تانية. لما النقل يخلص الـ DMA بيعمل Interrupt للـ CPU يقوله "خلصت".</p>
+
+    <div class="compare-grid">
+      <div class="compare-card left">
+        <h4>نقل بدون DMA</h4>
+        <p>CPU بيقرأ من الـ Peripheral → بيكتب في الذاكرة → يكرر آلاف المرات.</p>
+        <p>الـ CPU مشغول 100% بالنقل — ما بيعملش أي حاجة تانية.</p>
+        <p>Slow + CPU Overhead عالي.</p>
+      </div>
+      <div class="compare-card right">
+        <h4>نقل مع DMA</h4>
+        <p>CPU بيقول للـ DMA "انقل"، الـ DMA يشتغل، الـ CPU يعمل حاجات تانية.</p>
+        <p>لما DMA يخلص: Interrupt للـ CPU.</p>
+        <p>Fast + CPU Overhead قليل.</p>
+      </div>
+    </div>
+
+    <h4>أمثلة استخدام DMA:</h4>
+    <p>نقل Audio data من microphone للذاكرة. نقل Video frames من كاميرا للذاكرة. نقل البيانات من/إلى USB. نقل البيانات في الـ Network cards.</p>
+  </div>
+
+  <div class="card">
+    <h3>🔍 JTAG — Joint Test Action Group</h3>
+    <p><strong>JTAG</strong> هو standard interface بيستخدم في 3 أغراض رئيسية:</p>
+    <p><strong>1. Debugging:</strong> بيخليك تتوقف عند نقطة معينة في الكود (Breakpoint) وتشوف قيم الـ Registers والـ Memory — من غير ما تحتاج تفك الـ Chip من الدائرة.</p>
+    <p><strong>2. Programming:</strong> بتنزّل الكود على الـ Microcontroller من خلال JTAG — بديل لأساليب Programming التانية.</p>
+    <p><strong>3. Testing / Boundary Scan:</strong> بتتحقق إن الـ connections على الـ PCB (اللحام) صح — مهم جداً في مرحلة التصنيع.</p>
+    <p>JTAG بيستخدم 4-5 pins: TDI (Test Data In)، TDO (Test Data Out)، TCK (Test Clock)، TMS (Test Mode Select)، TRST (optional Reset).</p>
+  </div>
+</div>
+
+<!-- ===================== SECTION 8 ===================== -->
+<div class="section" id="s8">
+  <div class="section-header">
+    <div class="section-num">8</div>
+    <div>
+      <div class="section-title">Kernel vs Operating System</div>
+      <div class="section-subtitle">مين المخ ومين الجسم</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧅 OS vs Kernel — الفرق</h3>
+    <p><strong>Kernel</strong> هو القلب أو النواة — الجزء الأساسي في الـ OS اللي بيشتغل مباشرة على الـ Hardware. ده اللي بيتحكم في كل حاجة على مستوى منخفض.</p>
+    <p><strong>Operating System</strong> = Kernel + User Interface + Libraries + Applications. يعني الـ OS أكبر من الـ Kernel.</p>
+    <p>الـ Kernel بيدير: Memory Management, Process/Task Scheduling, Device Control, Interrupt Handling.</p>
+    <div class="callout callout-info">
+      <div class="callout-title">💡 تشبيه بسيط</div>
+      <p>لو الـ OS هو السيارة كاملة → الـ Kernel هو المحرك والتروس. تقدر تستخدم المحرك بدون تكييف ونافذة كهربائية (بدون OS كامل) — ده الـ Bare-Metal.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚡ Bare-Metal Programming</h3>
+    <p><strong>Bare-Metal</strong> يعني إنك بتكتب الكود مباشرة على الـ Hardware من غير OS. الكود بتاعك هو اللي بيتحكم في كل حاجة.</p>
+    <p>Arduino Uno في الغالب Bare-Metal — مش فيه OS، الكود بيشتغل مباشرة على الـ ATmega328.</p>
+    <p>مميزات: أسرع، أقل استهلاك للذاكرة، أبسط للأنظمة الصغيرة.</p>
+    <p>عيوب: أصعب في الـ Development، مش بيعمل Multitasking بشكل طبيعي.</p>
+  </div>
+
+  <div class="card">
+    <h3>📊 مقارنة Bare-Metal vs RTOS vs Full OS</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>الخاصية</th><th>Bare-Metal</th><th>RTOS</th><th>Full OS (Linux/Windows)</th></tr>
+        <tr><td>وجود OS</td><td class="td-no">لأ</td><td>RTOS بس</td><td class="td-yes">نعم كامل</td></tr>
+        <tr><td>Multitasking</td><td class="td-no">محدود/يدوي</td><td class="td-yes">نعم بـ Scheduling</td><td class="td-yes">نعم كامل</td></tr>
+        <tr><td>Memory</td><td>أقل استهلاك</td><td>متوسط</td><td>أعلى استهلاك</td></tr>
+        <tr><td>مناسب لـ</td><td>أنظمة بسيطة</td><td>Real-Time Systems</td><td>أنظمة معقدة</td></tr>
+        <tr><td>أمثلة</td><td>Arduino Uno</td><td>FreeRTOS على ESP32</td><td>Raspberry Pi</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SECTION 9 ===================== -->
+<div class="section" id="s9">
+  <div class="section-header">
+    <div class="section-num">9</div>
+    <div>
+      <div class="section-title">IoT Basics</div>
+      <div class="section-subtitle">إنترنت الأشياء — ربط العالم المادي بالإنترنت</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌐 IoT يعني إيه؟</h3>
+    <p><strong>IoT (Internet of Things)</strong> يعني إنك بتوصّل Embedded Devices بالإنترنت عشان تقدر تراقبها أو تتحكم فيها من أي مكان في العالم.</p>
+    <p>الفرق بين Embedded System عادي و IoT Device: الـ IoT Device فيه إضافة connectivity — Wi-Fi, Bluetooth, Cellular وبيتواصل مع servers أو cloud.</p>
+    
+    <h4>أمثلة IoT:</h4>
+    <p>Smart Home (إضاءة ذكية، كاميرات، ثرموستات متصل). Wearables (ساعة ذكية بتتابع صحتك). Industrial IoT (مراقبة ماكينات المصانع عن بُعد). Smart Agriculture (مراقبة رطوبة التربة وري تلقائي).</p>
+  </div>
+
+  <div class="card">
+    <h3>📡 كيف بيتواصل الـ IoT Device مع الـ Server؟</h3>
+    <p>الـ IoT Device بيستخدم <strong>HTTP Protocol</strong> (نفس اللي المتصفح بيستخدمه) أو MQTT (بروتوكول أخف للـ IoT) عشان يبعت بيانات للـ Server أو Cloud.</p>
+    <p>مثال: Sensor بيقيس الحرارة كل دقيقة → بيبعتها لـ Cloud Server عبر Wi-Fi → تقدري تشوفيها على موبايلك في أي مكان.</p>
+  </div>
+
+  <div class="card">
+    <h3>⚖️ Embedded System عادي vs IoT System</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>الخاصية</th><th>Embedded System عادي</th><th>IoT System</th></tr>
+        <tr><td>الاتصال بالإنترنت</td><td class="td-no">لأ (غالباً)</td><td class="td-yes">نعم — ضروري</td></tr>
+        <tr><td>الـ Cloud</td><td class="td-no">مش محتاج</td><td class="td-yes">غالباً بيستخدم Cloud</td></tr>
+        <tr><td>مثال</td><td>Airbag في السيارة</td><td>ثرموستات Google Nest</td></tr>
+        <tr><td>الأمان (Security)</td><td>أقل قلقاً</td><td>تحدي كبير جداً</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SECTION 10 ===================== -->
+<div class="section" id="s10">
+  <div class="section-header">
+    <div class="section-num">10</div>
+    <div>
+      <div class="section-title">Communication Protocols</div>
+      <div class="section-subtitle">كيف الأجهزة بتتكلم مع بعض — UART, SPI, I2C وأكتر</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📡 مفاهيم أساسية قبل ما ندخل في البروتوكولات</h3>
+    <p><strong>Serial vs Parallel:</strong> Serial = بتبعت الـ bits واحدة ورا التانية على سلك واحد. Parallel = بتبعت كذا bit في نفس الوقت على أسلاك متعددة. الـ Serial أسهل ومقاوم أكثر للمسافات الطويلة.</p>
+    <p><strong>Synchronous vs Asynchronous:</strong> Synchronous = فيه Clock مشترك بين الـ sender والـ receiver — بيتزامنوا عليه. Asynchronous = مفيش Clock مشترك — كل جهاز عنده clock خاص، ولازم يتفقوا على baud rate.</p>
+    <p><strong>Half-Duplex vs Full-Duplex:</strong> Half = إرسال أو استقبال في وقت واحد، مش الاتنين. Full = إرسال واستقبال في نفس الوقت (زي التليفون).</p>
+    <p><strong>Baud Rate:</strong> عدد الـ Symbols (تغييرات الإشارة) في الثانية. في أغلب الحالات = Bit Rate.</p>
+
+    <div class="callout callout-info">
+      <div class="callout-title">📌 من الامتحان الفعلي (سؤال 12)</div>
+      <p>"Which is a key advantage of serial communication over parallel?" — الإجابة: <strong>It is less prone to signal degradation and crosstalk over long distances</strong>.</p>
+      <p>سؤال 13: المشكلة الكبيرة في Parallel over long distances: <strong>Timing skew — bits arrive at slightly different times causing data corruption</strong>.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>1️⃣ UART — Universal Asynchronous Receiver/Transmitter</h3>
+    <p><strong>تعريفه:</strong> بروتوكول تواصل تسلسلي Asynchronous — مفيش clock مشترك. كل جهاز بيستخدم clock خاص بيه ولازم يتفقوا على <strong>Baud Rate</strong> واحد.</p>
+    <p><strong>الأسلاك:</strong> 2 أسلاك فقط: <strong>TX</strong> (Transmit) و <strong>RX</strong> (Receive).</p>
+    <p><strong>Master/Slave:</strong> لأ — Peer-to-Peer، كل جهاز متساوي.</p>
+    <p><strong>Duplex:</strong> Full-Duplex (بيرسل ويستقبل في نفس الوقت على سلكين منفصلين).</p>
+    <p><strong>Data Frame:</strong> Start bit → 5-9 Data bits → Optional Parity bit → 1-2 Stop bits.</p>
+    <p><strong>Error Detection:</strong> Parity bit (بيكتشف بعض الأخطاء) + Framing errors (لو stop bit مش في مكانه).</p>
+    <p><strong>الـ Baud Rates الشائعة:</strong> 9600, 115200 bps.</p>
+    <p><strong>مميزاته:</strong> بسيط جداً، 2 سلك بس، Full-Duplex.</p>
+    <p><strong>عيوبه:</strong> ما بيدعمش Multi-slave، بطيء نسبياً، محتاج نفس الـ baud rate على الجهازين.</p>
+    <p><strong>استخدامه:</strong> GPS modules, Bluetooth modules (HC-05), GSM modules, التواصل مع الكمبيوتر.</p>
+
+    <div class="callout callout-trap">
+      <div class="callout-title">⚠️ TRAP سؤال 17 من الامتحان</div>
+      <p>"Which is true about UART?" — الإجابة الصح: <strong>UART supports full-duplex communication using separate TX and RX lines</strong>.</p>
+      <p>❌ "UART is synchronous" — غلط، هو asynchronous.</p>
+      <p>❌ "Both devices must operate at different baud rates" — غلط! لازم نفس الـ baud rate.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>2️⃣ USART — Universal Synchronous/Asynchronous Receiver/Transmitter</h3>
+    <p><strong>USART = UART + القدرة على الشغل Synchronous أيضاً.</strong></p>
+    <p>في الـ Synchronous mode، فيه Clock line إضافية. في الـ Asynchronous mode، بيشتغل زي UART عادي.</p>
+    <p>ATmega328 (Arduino Uno) فيه USART — يعني يقدر يشتغل بالاتنين.</p>
+    <div class="callout callout-trap">
+      <div class="callout-title">⚠️ TRAP مهمة جداً</div>
+      <p>UART ≠ USART. الـ USART هو superset — بيعمل كل حاجة UART بيعملها + أكتر (Synchronous mode).</p>
+      <p>لو السؤال قال "UART or USART" — الـ USART هو الأشمل.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>3️⃣ SPI — Serial Peripheral Interface</h3>
+    <p><strong>تعريفه:</strong> بروتوكول Synchronous (فيه Clock مشترك) بيستخدم architecture Master/Slave.</p>
+    <p><strong>الأسلاك الأساسية الـ 4:</strong></p>
+    <p>• <strong>MOSI</strong> (Master Out Slave In) — بيانات من Master للـ Slave.</p>
+    <p>• <strong>MISO</strong> (Master In Slave Out) — بيانات من Slave للـ Master.</p>
+    <p>• <strong>SCK/CLK</strong> (Serial Clock) — الـ Clock اللي الـ Master بيولده.</p>
+    <p>• <strong>SS/CS</strong> (Slave Select / Chip Select) — بيحدد أنهي Slave بيشتغل دلوقتي.</p>
+    <p><strong>Master/Slave:</strong> نعم — Master واحد + عدة Slaves.</p>
+    <p><strong>Duplex:</strong> Full-Duplex.</p>
+    <p><strong>السرعة:</strong> الأسرع في المقارنة — ممكن يوصل لـ 80MHz على ESP8266.</p>
+    <p><strong>مميزاته:</strong> سريع جداً، Full-Duplex.</p>
+    <p><strong>عيوبه:</strong> محتاج سلك SS لكل Slave إضافي — كتير Slaves = كتير pins.</p>
+    <p><strong>استخدامه:</strong> SD Card modules, TFT Displays, ADC chips, SPI Flash memories.</p>
+
+    <div class="callout callout-trap">
+      <div class="callout-title">⚠️ TRAP من الامتحان (سؤال 21-23)</div>
+      <p>سؤال 21: "Signal lines in standard 4-wire SPI?" — الإجابة: <strong>MISO, MOSI, SCK, and CS (or SS)</strong>.</p>
+      <p>سؤال 22: "Nature of SPI?" — الإجابة: <strong>SPI is synchronous, uses shared clock line (SCK) for synchronization</strong>.</p>
+      <p>سؤال 23: "Why is SPI synchronous even though it lacks start/stop bits?" — الإجابة: <strong>The master provides a shared clock signal (SCK)</strong>.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>4️⃣ I²C — Inter-Integrated Circuit</h3>
+    <p><strong>تعريفه:</strong> بروتوكول Synchronous بيستخدم <strong>سلكين بس</strong> ويدعم Multiple Masters و Multiple Slaves على نفس الـ Bus.</p>
+    <p><strong>الأسلاك:</strong></p>
+    <p>• <strong>SDA</strong> (Serial Data) — بيانات.</p>
+    <p>• <strong>SCL</strong> (Serial Clock) — الـ Clock.</p>
+    <p><strong>كيف بيميّز بين الـ Devices؟</strong> كل Device عنده 7-bit address فريد.</p>
+    <p><strong>Master/Slave:</strong> نعم — يدعم Multiple Masters و Multiple Slaves.</p>
+    <p><strong>Duplex:</strong> Half-Duplex (SDA مشترك للاتجاهين).</p>
+    <p><strong>السرعة:</strong> أبطأ من SPI. Standard: 100kHz, Fast: 400kHz, High-Speed: 3.4MHz.</p>
+    <p><strong>Arbitration:</strong> لما أكتر من Master بيحاولوا يبعتوا في نفس الوقت — I²C فيه آلية Non-Destructive Arbitration: المـ Master اللي بيكتب '1' وهو شايف '0' على الـ SDA يعرف إنه خسر الـ arbitration ويوقف.</p>
+    <p><strong>Clock Stretching:</strong> الـ Slave يقدر يمسك الـ SCL على Low عشان يأخر الـ Master ويكسب وقت.</p>
+    <p><strong>مميزاته:</strong> سلكين بس لأي عدد devices، multi-master.</p>
+    <p><strong>عيوبه:</strong> أبطأ من SPI، Half-Duplex.</p>
+    <p><strong>استخدامه:</strong> Temperature sensors, OLED Displays, RTC modules, IMU sensors.</p>
+
+    <div class="callout callout-trap">
+      <div class="callout-title">⚠️ TRAP أسئلة 26-31 من الامتحان</div>
+      <p>سؤال 27: كل الإجابات A, B, C, D صح — الإجابة هي <strong>E (ALL)</strong>.</p>
+      <p>سؤال 28: "What happens during I²C arbitration?" — الإجابة: <strong>The master that first releases the SDA line loses arbitration</strong>.</p>
+      <p>سؤال 30: "Which is NOT true?" — الإجابة: <strong>A: Arbitration happens only during the slave address transmission phase</strong> — غلط! Arbitration يحصل كمان خلال الـ Data Phase.</p>
+      <p>سؤال 31: "Incorrect about failed I²C arbitration?" — الإجابة: <strong>A: A master losing arbitration must immediately send a STOP</strong> — ده غلط! الـ Master الخاسر بيوقف التحويل بدون STOP.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>5️⃣ TWI — Two Wire Interface</h3>
+    <p><strong>TWI هو نفس I²C تماماً.</strong> Atmel (صانع ATmega) سمّاه TWI عشان يتجنب مشاكل حقوق النشر مع Philips (اللي اخترعت I²C).</p>
+    <p>لما الدكتور يسأل عن TWI — إجاباتك عن I²C صح تماماً.</p>
+  </div>
+
+  <div class="card">
+    <h3>6️⃣ LIN — Local Interconnect Network</h3>
+    <p><strong>تعريفه:</strong> بروتوكول تواصل تسلسلي Asynchronous بسيط وأرخص من CAN.</p>
+    <p><strong>الأسلاك:</strong> سلك واحد بس (Single wire) + Ground.</p>
+    <p><strong>Master/Slave:</strong> نعم — Master واحد + حتى 16 Slave.</p>
+    <p><strong>Duplex:</strong> Half-Duplex.</p>
+    <p><strong>السرعة:</strong> بطيء — حتى 20 kbps.</p>
+    <p><strong>استخدامه:</strong> داخل السيارات — للتحكم في الإضاءة، المرايا، مقاعد، مكيفات.</p>
+    <p>أرخص من CAN ومناسب للمهام البسيطة داخل السيارة.</p>
+  </div>
+
+  <div class="card">
+    <h3>7️⃣ OWI — One Wire Interface</h3>
+    <p><strong>تعريفه:</strong> بروتوكول Asynchronous بيستخدم <strong>سلك واحد فقط</strong> للبيانات (بالإضافة لـ Ground).</p>
+    <p><strong>Master/Slave:</strong> نعم.</p>
+    <p><strong>السرعة:</strong> بطيء جداً (حوالي 16.3 kbps).</p>
+    <p><strong>استخدامه:</strong> Temperature sensors (DS18B20)، الأجهزة اللي محتاجة أقل pins ممكنة.</p>
+    <p>ممكن يوصل الجهاز من الـ data wire نفسها (Parasitic Power).</p>
+  </div>
+
+  <div class="card">
+    <h3>8️⃣ LonWorks — Local Operating Network</h3>
+    <p><strong>تعريفه:</strong> بروتوكول للـ Industrial Automation والـ Building Control.</p>
+    <p>بيستخدم في التحكم في المباني (إضاءة، تكييف، كهرباء)، المصانع، الـ Smart Grid.</p>
+    <p>يدعم عدد ضخم من الـ Nodes على نفس الـ Network.</p>
+    <p>أبطأ وأعقد من I²C و SPI لكن مصمم للـ Industrial Scale.</p>
+  </div>
+
+  <div class="card">
+    <h3>📊 جدول المقارنة العملاق — كل البروتوكولات</h3>
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>الخاصية</th>
+          <th>UART</th>
+          <th>USART</th>
+          <th>SPI</th>
+          <th>I2C/TWI</th>
+          <th>LIN</th>
+          <th>OWI</th>
+        </tr>
+        <tr>
+          <td>Sync/Async</td>
+          <td>Async</td>
+          <td>Async أو Sync</td>
+          <td>Sync</td>
+          <td>Sync</td>
+          <td>Async</td>
+          <td>Async</td>
+        </tr>
+        <tr>
+          <td>Duplex</td>
+          <td>Full</td>
+          <td>Full</td>
+          <td>Full</td>
+          <td>Half</td>
+          <td>Half</td>
+          <td>Half</td>
+        </tr>
+        <tr>
+          <td>عدد الأسلاك</td>
+          <td>2 (TX, RX)</td>
+          <td>2-3</td>
+          <td>4 (MOSI,MISO,SCK,SS)</td>
+          <td>2 (SDA, SCL)</td>
+          <td>1</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <td>Master/Slave</td>
+          <td class="td-no">لأ (P2P)</td>
+          <td class="td-no">لأ (غالباً)</td>
+          <td class="td-yes">نعم</td>
+          <td class="td-yes">نعم (Multi)</td>
+          <td class="td-yes">نعم</td>
+          <td class="td-yes">نعم</td>
+        </tr>
+        <tr>
+          <td>السرعة</td>
+          <td>متوسط (115.2 kbps)</td>
+          <td>مرن</td>
+          <td class="td-highlight">الأسرع (MBps)</td>
+          <td>متوسط (400kHz-3.4MHz)</td>
+          <td>بطيء (20kbps)</td>
+          <td>بطيء جداً</td>
+        </tr>
+        <tr>
+          <td>Multi-Device</td>
+          <td class="td-no">لأ</td>
+          <td class="td-no">محدود</td>
+          <td>نعم (SS لكل slave)</td>
+          <td class="td-yes">نعم (بالـ address)</td>
+          <td>نعم (16 slave)</td>
+          <td>نعم</td>
+        </tr>
+        <tr>
+          <td>الاستخدام</td>
+          <td>GPS, BT modules</td>
+          <td>Arduino serial</td>
+          <td>SD Card, Displays</td>
+          <td>Sensors, OLED</td>
+          <td>داخل السيارات</td>
+          <td>Temp sensors</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🕳️ الفروق الدقيقة اللي الدكتور بيلعب بيها</h3>
+    <p><strong>UART vs USART:</strong> USART = UART + Synchronous mode. لو السؤال قال "supports both sync and async" → USART. لو قال "asynchronous only" → UART.</p>
+    <p><strong>I²C vs TWI:</strong> نفس الحاجة تماماً — فقط اختلاف في الاسم. Atmel بتسميه TWI، Philips/NXP بتسميه I²C.</p>
+    <p><strong>I²C vs SPI:</strong> I²C = 2 سلك فقط + addresses. SPI = 4 أسلاك + أسرع + Full-Duplex. لو محتاج سرعة → SPI. لو محتاج أقل pins → I²C.</p>
+    <p><strong>Clock speeds ESP8266 (سؤال 32):</strong> SPI: 40MHz, I²C: 1MHz.</p>
+  </div>
+</div>
+
+<!-- ===================== SECTION 11 ===================== -->
+<div class="section" id="s11">
+  <div class="section-header">
+    <div class="section-num">11</div>
+    <div>
+      <div class="section-title">Arduino Uno vs ESP8266 vs ESP32</div>
+      <div class="section-subtitle">المقارنة الكاملة والأرقام المهمة</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📊 جدول المقارنة الكبير</h3>
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>الخاصية</th>
+          <th>Arduino Uno</th>
+          <th>ESP8266 (NodeMCU)</th>
+          <th>ESP32</th>
+        </tr>
+        <tr>
+          <td>المعالج</td>
+          <td>ATmega328P (AVR 8-bit)</td>
+          <td>Xtensa LX106 (32-bit)</td>
+          <td>Xtensa LX6 Dual-Core (32-bit)</td>
+        </tr>
+        <tr>
+          <td>Clock Speed</td>
+          <td class="td-highlight">16 MHz</td>
+          <td>80 MHz (حتى 160 MHz)</td>
+          <td>240 MHz</td>
+        </tr>
+        <tr>
+          <td>RAM (SRAM)</td>
+          <td class="td-highlight">2 KB</td>
+          <td>80 KB</td>
+          <td>520 KB</td>
+        </tr>
+        <tr>
+          <td>Flash (ROM)</td>
+          <td class="td-highlight">32 KB</td>
+          <td>4 MB (external Flash)</td>
+          <td>4 MB (external Flash)</td>
+        </tr>
+        <tr>
+          <td>EEPROM</td>
+          <td class="td-highlight">1 KB</td>
+          <td>Emulated in Flash</td>
+          <td>Emulated in Flash</td>
+        </tr>
+        <tr>
+          <td>Digital I/O Pins</td>
+          <td class="td-highlight">14</td>
+          <td>~17 (بعضها محجوز)</td>
+          <td>34+</td>
+        </tr>
+        <tr>
+          <td>Analog Input (ADC)</td>
+          <td class="td-highlight">6 channels (A0-A5)</td>
+          <td class="td-highlight">1 channel فقط (A0)</td>
+          <td>18 channels</td>
+        </tr>
+        <tr>
+          <td>ADC Resolution</td>
+          <td>10-bit (0-1023)</td>
+          <td>10-bit (0-1023)</td>
+          <td>12-bit (0-4095)</td>
+        </tr>
+        <tr>
+          <td>DAC</td>
+          <td class="td-no">لأ (PWM فقط)</td>
+          <td class="td-no">لأ</td>
+          <td class="td-yes">نعم (2 channels، 8-bit)</td>
+        </tr>
+        <tr>
+          <td>PWM Channels</td>
+          <td>6 channels</td>
+          <td>~4 channels</td>
+          <td>16 channels</td>
+        </tr>
+        <tr>
+          <td>Wi-Fi</td>
+          <td class="td-no">لأ</td>
+          <td class="td-yes">802.11 b/g/n</td>
+          <td class="td-yes">802.11 b/g/n</td>
+        </tr>
+        <tr>
+          <td>Bluetooth</td>
+          <td class="td-no">لأ</td>
+          <td class="td-no">لأ</td>
+          <td class="td-yes">Classic + BLE</td>
+        </tr>
+        <tr>
+          <td>Operating Voltage</td>
+          <td class="td-highlight">5V</td>
+          <td class="td-highlight">3.3V</td>
+          <td class="td-highlight">3.3V</td>
+        </tr>
+        <tr>
+          <td>Max GPIO Current</td>
+          <td>40 mA per pin</td>
+          <td class="td-highlight">12 mA per pin</td>
+          <td>40 mA per pin</td>
+        </tr>
+        <tr>
+          <td>UART</td>
+          <td>1</td>
+          <td>2 (1 fully usable)</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td>SPI</td>
+          <td>1</td>
+          <td>2</td>
+          <td>4</td>
+        </tr>
+        <tr>
+          <td>I²C</td>
+          <td>1</td>
+          <td>via Software (1)</td>
+          <td>2</td>
+        </tr>
+        <tr>
+          <td>المناسب لـ</td>
+          <td>المبتدئين، مشاريع بسيطة</td>
+          <td>IoT بسيط</td>
+          <td>IoT متقدم، AI، BLE</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="numbers-box">
+    <h3>🔢 الأرقام اللي لازم تتحفظ حرفياً (من الامتحانات)</h3>
+    <div class="num-row"><span class="num-label">Arduino Uno — عدد Digital I/O Pins</span><span class="num-value">14</span></div>
+    <div class="num-row"><span class="num-label">Arduino Uno — عدد Analog Input Pins</span><span class="num-value">6 (A0-A5)</span></div>
+    <div class="num-row"><span class="num-label">Arduino Uno — Clock Speed</span><span class="num-value">16 MHz</span></div>
+    <div class="num-row"><span class="num-label">Arduino Uno — Operating Voltage</span><span class="num-value">5V</span></div>
+    <div class="num-row"><span class="num-label">Arduino Uno — Max Current per Pin</span><span class="num-value">40 mA</span></div>
+    <div class="num-row"><span class="num-label">ATmega328 — Flash Memory</span><span class="num-value">32 KB</span></div>
+    <div class="num-row"><span class="num-label">ATmega328 — SRAM</span><span class="num-value">2 KB</span></div>
+    <div class="num-row"><span class="num-label">ATmega328 — EEPROM</span><span class="num-value">1 KB</span></div>
+    <div class="num-row"><span class="num-label">ATmega328 — ADC Resolution</span><span class="num-value">10-bit</span></div>
+    <div class="num-row"><span class="num-label">ESP8266 — ADC Channels</span><span class="num-value">1 فقط (A0)</span></div>
+    <div class="num-row"><span class="num-label">ESP8266 — Max GPIO Current</span><span class="num-value">12 mA</span></div>
+    <div class="num-row"><span class="num-label">ESP8266 — RAM</span><span class="num-value">80 KB</span></div>
+    <div class="num-row"><span class="num-label">ESP8266 — Flash</span><span class="num-value">4 MB</span></div>
+    <div class="num-row"><span class="num-label">ESP8266 — Operating Voltage</span><span class="num-value">3.3V</span></div>
+    <div class="num-row"><span class="num-label">ESP8266 — GPIO6 to GPIO11</span><span class="num-value">محجوزة للـ Flash (لا تستخدم)</span></div>
+  </div>
+
+  <div class="callout callout-trap">
+    <div class="callout-title">⚠️ TRAPS مهمة من الامتحان الفعلي</div>
+    <p>سؤال 8: "Maximum ADC channels on ESP8266?" — الإجابة: <strong>D) 1</strong> فقط!</p>
+    <p>سؤال 9: "ESP8266 RAM and Flash?" — الإجابة: <strong>80 KB RAM, 4 MB Flash</strong>.</p>
+    <p>سؤال 10: "Pins not recommended for GPIO on ESP8266?" — الإجابة: <strong>A) GPIO6-GPIO11</strong> (محجوزة للـ SPI Flash).</p>
+    <p>سؤال 11: "Max safe current per pin on ESP8266?" — الإجابة: <strong>C) 12 mA</strong>.</p>
+    <p>سؤال 50: "Microcontroller in Arduino Uno?" — الإجابة: <strong>c) ATmega328</strong>.</p>
+    <p>سؤال 53: "Clock speed of ATmega328?" — الإجابة: <strong>c) 16 MHz</strong>.</p>
+    <p>سؤال 55: "Analogue input pins on Arduino Uno?" — الإجابة: <strong>b) 6</strong>.</p>
+    <p>سؤال 65: "Which Arduino uses ATmega328P?" — الإجابة: <strong>a) Arduino Uno</strong> (و b) Arduino Nano كمان).</p>
+  </div>
+</div>
+
+<!-- ===================== SECTION 12 ===================== -->
+<div class="section" id="s12">
+  <div class="section-header">
+    <div class="section-num">12</div>
+    <div>
+      <div class="section-title">FPGA vs ASIC vs DSP vs GPP</div>
+      <div class="section-subtitle">أنواع المعالجات والحلول الإلكترونية</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💡 تعريف سريع للأربعة</h3>
+    <p><strong>GPP (General Purpose Processor):</strong> المعالج العام — زي Intel Core أو ATmega. مرن جداً، تبرمجه لأي مهمة. لكن مش متخصص.</p>
+    <p><strong>ASIC (Application-Specific Integrated Circuit):</strong> دائرة متكاملة مصممة لمهمة <strong>واحدة محددة</strong> فقط. تُصمم من الصفر، بعد التصنيع مش ممكن تغيّرها.</p>
+    <p><strong>FPGA (Field-Programmable Gate Array):</strong> دائرة بتقدري تبرمجيها بعد التصنيع عدد غير محدود من المرات. فيها Logic Blocks قابلة للتهيئة.</p>
+    <p><strong>DSP (Digital Signal Processor):</strong> معالج متخصص في معالجة الإشارات الرقمية — فيه وحدات خاصة للعمليات الرياضية المتكررة (زي Multiply-Accumulate).</p>
+  </div>
+
+  <div class="card">
+    <h3>📊 جدول المقارنة الشامل (من الامتحانات)</h3>
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>الخاصية</th>
+          <th>ASIC</th>
+          <th>FPGA</th>
+          <th>GPP</th>
+          <th>DSP</th>
+        </tr>
+        <tr>
+          <td>Flexibility</td>
+          <td class="td-no">مفيش (Fixed)</td>
+          <td class="td-highlight">عالية (Reprogrammable)</td>
+          <td class="td-yes">عالية جداً</td>
+          <td>متوسطة (متخصص)</td>
+        </tr>
+        <tr>
+          <td>Power Consumption</td>
+          <td class="td-highlight">الأقل</td>
+          <td>متوسط</td>
+          <td class="td-no">الأعلى</td>
+          <td>متوسط</td>
+        </tr>
+        <tr>
+          <td>السعر (Unit Cost)</td>
+          <td class="td-highlight">الأرخص (mass)</td>
+          <td>متوسط-غالي</td>
+          <td>متوسط</td>
+          <td>متوسط</td>
+        </tr>
+        <tr>
+          <td>NRE Cost (تطوير)</td>
+          <td class="td-no">الأغلى</td>
+          <td>متوسط</td>
+          <td>أقل</td>
+          <td>متوسط</td>
+        </tr>
+        <tr>
+          <td>Time to Market</td>
+          <td class="td-no">الأطول</td>
+          <td>سريع</td>
+          <td class="td-highlight">الأسرع</td>
+          <td>سريع</td>
+        </tr>
+        <tr>
+          <td>Programmability</td>
+          <td class="td-no">مستحيل بعد التصنيع</td>
+          <td class="td-yes">بعد التصنيع (مرات)</td>
+          <td class="td-yes">دايماً</td>
+          <td class="td-yes">دايماً (software)</td>
+        </tr>
+        <tr>
+          <td>Performance</td>
+          <td class="td-highlight">الأعلى (للمهمة المحددة)</td>
+          <td>عالي (parallel)</td>
+          <td>متوسط</td>
+          <td class="td-highlight">عالي (signal processing)</td>
+        </tr>
+        <tr>
+          <td>Parallelism</td>
+          <td class="td-yes">عالي جداً</td>
+          <td class="td-yes">عالي جداً</td>
+          <td class="td-no">محدود</td>
+          <td class="td-yes">عالي (SIMD)</td>
+        </tr>
+        <tr>
+          <td>Mass Production</td>
+          <td class="td-yes">مثالي</td>
+          <td>مش الأفضل</td>
+          <td>جيد</td>
+          <td>جيد</td>
+        </tr>
+        <tr>
+          <td>Prototyping</td>
+          <td class="td-no">صعب ومكلف</td>
+          <td class="td-yes">مثالي</td>
+          <td class="td-yes">جيد</td>
+          <td class="td-yes">جيد</td>
+        </tr>
+        <tr>
+          <td>أمثلة</td>
+          <td>Bitcoin miner chip، Chip في iPhone</td>
+          <td>Prototyping، Military</td>
+          <td>Arduino، Laptop CPU</td>
+          <td>Audio processing، Radar</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 DSP Features الخاصة</h3>
+    <p><strong>Dedicated Multiplier/MAC (Multiply-Accumulate):</strong> وحدة hardware مخصصة للضرب والجمع المتكرر — مهمة جداً في الـ filtering.</p>
+    <p><strong>Saturation Arithmetic:</strong> لما النتيجة تعدي الحد الأقصى، بدل ما تـ overflow تفضل عند الحد الأقصى — مهم في الـ audio processing.</p>
+    <p><strong>Pipelining:</strong> تنفيذ أكتر من تعليمة في نفس الوقت على مراحل.</p>
+    <p><strong>SIMD (Single Instruction Multiple Data):</strong> تعليمة واحدة بتشتغل على بيانات كتير في نفس الوقت — مثالية للـ Signal Processing.</p>
+    <p><strong>VLIW (Very Long Instruction Word):</strong> كل "تعليمة" بتحتوي على أكتر من عملية تتنفذ في نفس الـ clock.</p>
+    <p><strong>Von Neumann:</strong> ده <strong>مش</strong> feature في DSP — DSP بيستخدم Harvard Architecture (ذاكرتين منفصلتين للكود والبيانات). من الامتحان: "Which is NOT a typical DSP feature? Von Neumann memory architecture".</p>
+  </div>
+
+  <div class="callout callout-trap">
+    <div class="callout-title">⚠️ TRAPS من الامتحان (أسئلة 1-9 من الامتحان الثاني)</div>
+    <p>أقل Power Consumption → <strong>ASIC</strong>.</p>
+    <p>أعلى Power Consumption → <strong>GPP</strong>.</p>
+    <p>أقل Price (unit cost) → <strong>ASIC</strong> (في الإنتاج الضخم).</p>
+    <p>أعلى Price → <strong>FPGA</strong>.</p>
+    <p>أسهل Implementation → <strong>GPP</strong>.</p>
+    <p>أصعب Implementation → <strong>ASIC</strong>.</p>
+    <p>أقل Time to Market → <strong>GPP</strong>.</p>
+    <p>أعلى Time to Market → <strong>ASIC</strong>.</p>
+    <p>Real-time Signal Processing → <strong>DSP</strong>.</p>
+    <p>Highly parallel and custom processing → <strong>FPGA</strong>.</p>
+  </div>
+</div>
+
+<!-- ===================== SECTION 13 ===================== -->
+<div class="section" id="s13">
+  <div class="section-header">
+    <div class="section-num">13</div>
+    <div>
+      <div class="section-title">Arduino Programming Basics</div>
+      <div class="section-subtitle">كل function وكل concept بتفصيل ممل</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔧 setup() vs loop()</h3>
+    <div class="code-block">
+<span class="code-keyword">void</span> <span class="code-function">setup</span>() {
+  <span class="code-comment">// بتشتغل مرة واحدة بس عند بداية التشغيل أو الـ Reset</span>
+  <span class="code-comment">// بتستخدم للـ initialization:</span>
+  <span class="code-function">pinMode</span>(LED_PIN, OUTPUT);
+  <span class="code-function">Serial.begin</span>(<span class="code-number">9600</span>);
+}
+
+<span class="code-keyword">void</span> <span class="code-function">loop</span>() {
+  <span class="code-comment">// بتشتغل للأبد — بتكرر للنهاية</span>
+  <span class="code-comment">// ده جسم البرنامج الرئيسي</span>
+  <span class="code-function">digitalWrite</span>(LED_PIN, HIGH);
+  <span class="code-function">delay</span>(<span class="code-number">1000</span>);
+}
+    </div>
+    <p>setup() = run once at power-up or reset. loop() = runs continuously forever.</p>
+    <div class="callout callout-info">
+      <div class="callout-title">📌 من الامتحان</div>
+      <p>سؤال 26: "Function which starts after power-up or reset?" → <strong>setup()</strong>.</p>
+      <p>سؤال 27: "Function which repeatedly executes?" → <strong>loop()</strong>.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📌 pinMode(), digitalRead(), digitalWrite()</h3>
+    <div class="code-block">
+<span class="code-comment">// pinMode: بتحدد الـ pin هيكون INPUT أو OUTPUT</span>
+<span class="code-function">pinMode</span>(pin, OUTPUT);        <span class="code-comment">// الـ pin هيبعت</span>
+<span class="code-function">pinMode</span>(pin, INPUT);         <span class="code-comment">// الـ pin هيستقبل (floating)</span>
+<span class="code-function">pinMode</span>(pin, INPUT_PULLUP);  <span class="code-comment">// input + مقاومة داخلية لـ VCC</span>
+
+<span class="code-comment">// digitalWrite: بتكتب HIGH (1) أو LOW (0) على Digital Output pin</span>
+<span class="code-function">digitalWrite</span>(pin, HIGH);  <span class="code-comment">// يطلع 5V (Arduino Uno) أو 3.3V (ESP)</span>
+<span class="code-function">digitalWrite</span>(pin, LOW);   <span class="code-comment">// يطلع 0V</span>
+
+<span class="code-comment">// digitalRead: بيقرأ حالة Digital Input pin</span>
+<span class="code-type">int</span> val = <span class="code-function">digitalRead</span>(pin); <span class="code-comment">// يرجع HIGH أو LOW</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎛️ analogRead() و map()</h3>
+    <div class="code-block">
+<span class="code-comment">// analogRead: بيقرأ Analog Voltage ويحوّله لرقم (0-1023 في 10-bit ADC)</span>
+<span class="code-type">int</span> potValue = <span class="code-function">analogRead</span>(A0); <span class="code-comment">// 0 = 0V, 1023 = 5V (Arduino) أو 3.3V (ESP)</span>
+
+<span class="code-comment">// map: بتحوّل قيمة من range لـ range تاني</span>
+<span class="code-comment">// map(value, fromLow, fromHigh, toLow, toHigh)</span>
+<span class="code-type">int</span> f = <span class="code-function">map</span>(potValue, <span class="code-number">0</span>, <span class="code-number">1023</span>, <span class="code-number">1</span>, <span class="code-number">10</span>);
+<span class="code-comment">// لو potValue = 0  → f = 1</span>
+<span class="code-comment">// لو potValue = 1023 → f = 10</span>
+<span class="code-comment">// بتعمل linear mapping</span>
+    </div>
+    <p>من الامتحان (سؤال 2): t_delay = 1000/f لتحويل تردد لـ milliseconds. لو f = 1Hz → 1000ms. لو f = 10Hz → 100ms.</p>
+  </div>
+
+  <div class="card">
+    <h3>🔘 Pull-Up vs Pull-Down Resistors</h3>
+    <p>المشكلة: لما Button مش مضغوط، الـ pin "طائر" (floating) — بيقرأ قيم عشوائية.</p>
+    <p>الحل: مقاومة بتثبّت الـ pin على قيمة معروفة.</p>
+    
+    <div class="compare-grid">
+      <div class="compare-card left">
+        <h4>Pull-Down Resistor</h4>
+        <p>الـ pin متوصل بـ مقاومة للـ GND.</p>
+        <p>Button مش مضغوط → Pin = LOW (0V).</p>
+        <p>Button مضغوط → Pin = HIGH (VCC).</p>
+        <p>كود: <code>pinMode(pin, INPUT)</code> + مقاومة خارجية.</p>
+        <p>بتقرأ: HIGH لما مضغوط.</p>
+      </div>
+      <div class="compare-card right">
+        <h4>Pull-Up Resistor (أو INPUT_PULLUP)</h4>
+        <p>الـ pin متوصل بـ مقاومة للـ VCC.</p>
+        <p>Button مش مضغوط → Pin = HIGH (VCC).</p>
+        <p>Button مضغوط → Pin = LOW (GND).</p>
+        <p>كود: <code>pinMode(pin, INPUT_PULLUP)</code>.</p>
+        <p>بتقرأ: LOW لما مضغوط (عكسي!).</p>
+      </div>
+    </div>
+
+    <div class="callout callout-trap">
+      <div class="callout-title">⚠️ TRAP مهمة جداً (من الامتحان الفعلي)</div>
+      <p>Button 1: Pull-DOWN → reads <strong>HIGH</strong> when pressed.</p>
+      <p>Button 2: Pull-UP (internal) → reads <strong>LOW</strong> when pressed.</p>
+      <p>عشان تكتشف Button 2 مضغوط: <code>if (!digitalRead(BUTTON2_PIN))</code> — لاحظي علامة النفي (!).</p>
+      <p>سؤال 4: الإجابة B: <code>if (!digitalRead(BUTTON2_PIN))</code>.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚡ Debouncing — إزالة اهتزاز الزر</h3>
+    <p>لما بتضغطي Button، مش بيدي إشارة نظيفة — بيكون فيه "bounce" (اهتزازات سريعة) لمدة ~5-20ms.</p>
+    <p>من غير debouncing، الـ Arduino ممكن يشوف ضغطة واحدة كـ 5-10 ضغطات.</p>
+    
+    <p><strong>طريقة الـ while loop للـ debouncing (من الامتحان):</strong></p>
+    <div class="code-block">
+<span class="code-comment">// Button 1: Pull-DOWN → HIGH when pressed</span>
+<span class="code-keyword">if</span> (<span class="code-function">digitalRead</span>(BUTTON1_PIN)) {
+  counter = (counter + <span class="code-number">1</span>) % maxStates;
+  <span class="code-keyword">while</span> (<span class="code-function">digitalRead</span>(BUTTON1_PIN)); <span class="code-comment">// انتظر لحد ما الزر يتحرر</span>
+}
+
+<span class="code-comment">// Button 2: Pull-UP → LOW when pressed</span>
+<span class="code-keyword">if</span> (!<span class="code-function">digitalRead</span>(BUTTON2_PIN)) {
+  counter = (counter - <span class="code-number">1</span> + maxStates) % maxStates;
+  <span class="code-keyword">while</span> (!<span class="code-function">digitalRead</span>(BUTTON2_PIN)); <span class="code-comment">// انتظر لحد ما الزر يتحرر</span>
+}
+    </div>
+
+    <div class="callout callout-trap">
+      <div class="callout-title">⚠️ TRAP أسئلة 3 و 5 من الامتحان</div>
+      <p>سؤال 3: "Debounce Button 1 (pull-down) after its block?" — الإجابة: <strong>C) while (digitalRead(BUTTON1_PIN));</strong> — تنتظر لحد ما يبقى LOW (متحرر).</p>
+      <p>سؤال 5: "Debounce Button 2 (pull-up) after its block?" — الإجابة: <strong>A) while (!digitalRead(BUTTON2_PIN));</strong> — تنتظر لحد ما يبقى HIGH (متحرر).</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔢 Gray Code — الترميز الرمادي</h3>
+    <p>Gray Code هو طريقة ترميز ثنائي بحيث بين كل رقم والرقم اللي بعده <strong>بيتغير bit واحد بس</strong>.</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Counter</th><th>Binary</th><th>Gray Code</th></tr>
+        <tr><td>0</td><td>000</td><td>000</td></tr>
+        <tr><td>1</td><td>001</td><td>001</td></tr>
+        <tr><td>2</td><td>010</td><td>011</td></tr>
+        <tr><td>3</td><td>011</td><td>010</td></tr>
+        <tr><td>4</td><td>100</td><td>110</td></tr>
+        <tr><td>5</td><td>101</td><td>111</td></tr>
+        <tr><td>6</td><td>110</td><td>101</td></tr>
+        <tr><td>7</td><td>111</td><td>100</td></tr>
+      </table>
+    </div>
+    <p><strong>تحويل Binary لـ Gray:</strong> grayValue = counter ^ (counter >> 1)؛ ده بالظبط اللي في سؤال 6 من الامتحان.</p>
+    <div class="code-block">
+<span class="code-comment">// الإجابة الصح لسؤال 6:</span>
+<span class="code-type">int</span> grayValue = counter ^ (counter >> <span class="code-number">1</span>);
+<span class="code-keyword">for</span> (<span class="code-type">int</span> i = <span class="code-number">0</span>; i < LED_PINS_COUNT; i++) {
+  ledStates[i] = (grayValue >> i) & <span class="code-number">1</span>;
+}
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔍 Code Tracing — سؤال الكود من الامتحان الثاني</h3>
+    <div class="code-block">
+<span class="code-type">int</span> f = <span class="code-number">0</span>;
+<span class="code-keyword">void</span> <span class="code-function">loop</span>() {
+  <span class="code-keyword">while</span>(f == <span class="code-number">0</span>){
+    <span class="code-keyword">if</span> (pushbuton1 == HIGH) { <span class="code-function">digitalWrite</span>(ledRed, HIGH); f = <span class="code-number">1</span>; }
+    <span class="code-keyword">if</span> (pushbuton2 == HIGH) { <span class="code-function">digitalWrite</span>(ledRed, LOW);
+                              <span class="code-function">digitalWrite</span>(ledGreen, HIGH); f = <span class="code-number">0</span>; }
+  }
+}
+    </div>
+    <p><strong>سؤال 31:</strong> Button1 pressed → LED Red ON, f=1 → الـ while يخرج. ثم Button2 pressed — لكن الـ while خرج بالفعل (f=1 مش 0)! → <strong>الإجابة: A) red on then off — لأ! الإجابة B = red on then off then green on</strong>... لكن انتبه: لما f=1 الـ while بيوقف، فضغط Button2 مش هيحصل. الإجابة الأكثر دقة = A.</p>
+    <p><strong>سؤال 32:</strong> Button2 pressed أول → f=0 ولسه جوّا الـ while → LED Green ON, f=0. ثم Button1 pressed → LED Red ON, f=1 → <strong>الإجابة: C) red on</strong>.</p>
+    <p><strong>سؤال 33:</strong> B1 → Red ON, f=1, خرج الـ while. B2 مش هيشتغل. B1 تاني → لأ لأن f=1 والـ while مش شغّال. → اللي لسه شغّال Green ON (من الدورة السابقة). الإجابة: <strong>B) green on</strong>.</p>
+  </div>
+</div>
+
+<!-- ===================== SECTION 14 ===================== -->
+<div class="section" id="s14">
+  <div class="section-header">
+    <div class="section-num">14</div>
+    <div>
+      <div class="section-title">كيف يفكر الدكتور في الامتحان؟</div>
+      <div class="section-subtitle">الـ Traps والأنماط والاستراتيجيات</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧠 أنماط الأسئلة المتوقعة</h3>
+    <p><strong>النمط 1 — السؤال المعكوس:</strong> "Which is NOT a typical DSP feature?" بدل "Which IS". خلي بالك من NOT, INCORRECT, EXCEPT.</p>
+    <p><strong>النمط 2 — الاختيار E=ALL أو F=NONE:</strong> الدكتور بيحط أحياناً إجاباتين صح وإجابتين غلط، وإجابتين تانيين صح كلهم. لازم تكوني شايفة كل الاختيارات.</p>
+    <p><strong>النمط 3 — المقارنة الدقيقة:</strong> "UART vs USART" أو "I²C vs TWI" — حاجات متشابهة جداً.</p>
+    <p><strong>النمط 4 — Code Tracing:</strong> كود كامل وأسئلة "what is the output if..."</p>
+    <p><strong>النمط 5 — Fill in the Missing Code:</strong> زي الامتحان الحالي — تكملي الكود بالاختيار الصح.</p>
+    <p><strong>النمط 6 — الأرقام:</strong> "How many ADC channels...?" / "What is the clock speed...?" الأرقام بتتغير بسهولة في الاختيارات.</p>
+  </div>
+
+  <div class="card">
+    <h3>🕳️ التركات الأكثر تكراراً</h3>
+    <p>1. <strong>Pull-UP → LOW when pressed</strong> (مش HIGH). الكتير بيغلط هنا.</p>
+    <p>2. <strong>ESP8266 = 1 ADC channel فقط</strong> — مش 4 ومش 8.</p>
+    <p>3. <strong>UART هو Asynchronous</strong> (مش Synchronous).</p>
+    <p>4. <strong>SPI = Synchronous</strong> (بسبب الـ SCK).</p>
+    <p>5. <strong>I²C = Half-Duplex</strong> (مش Full).</p>
+    <p>6. <strong>Real-Time ≠ Fast</strong> — Real-Time = Predictable + Deadline.</p>
+    <p>7. <strong>Hard Real-Time = Catastrophic if missed</strong> (مش "performance degrades").</p>
+    <p>8. <strong>ASIC = Lowest power, Lowest unit cost (mass), Longest time to market</strong>.</p>
+    <p>9. <strong>Flash memory = program storage في ATmega328</strong> (مش RAM ومش EEPROM).</p>
+    <p>10. <strong>Von Neumann ≠ DSP feature</strong> — DSP بيستخدم Harvard Architecture.</p>
+    <p>11. <strong>Gray Code → بيتغير bit واحد بس</strong> بين أي رقمين متتاليين.</p>
+    <p>12. <strong>t_delay = 1000/f</strong> (frequency to milliseconds conversion).</p>
+  </div>
+
+  <div class="card">
+    <h3>🔍 كلمات الدكتور بيبدّلها في الاختيارات</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>الإجابة الصح</th><th>الـ Traps بيحطها</th></tr>
+        <tr><td>Asynchronous (UART)</td><td>Synchronous, needs clock signal</td></tr>
+        <tr><td>Full-Duplex (UART/SPI)</td><td>Half-Duplex, time-multiplexing</td></tr>
+        <tr><td>Catastrophic (Hard RT)</td><td>Performance degrades, system restarts</td></tr>
+        <tr><td>I²C = 2 wires</td><td>I²C = 4 wires, separate lines for master/slave</td></tr>
+        <tr><td>SPI = Master provides SCK</td><td>SPI uses parity for synchronization</td></tr>
+        <tr><td>ASIC = Lowest power</td><td>FPGA = Lowest power</td></tr>
+        <tr><td>GPP = Fastest time to market</td><td>FPGA = Fastest time to market</td></tr>
+        <tr><td>DSP = Floating-point optimized</td><td>DSP = High-speed parallel / image only</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📅 كيف تراجعي في آخر يوم</h3>
+    <p>1. افتحي جدول مقارنة Arduino vs ESP8266 vs ESP32 واحفظي الأرقام (ADC channels, RAM, Flash, Clock, Voltage, Max current).</p>
+    <p>2. راجعي جدول مقارنة البروتوكولات (Sync/Async, Duplex, Wires, Master/Slave, Speed).</p>
+    <p>3. راجعي جدول ASIC vs FPGA vs GPP vs DSP (Power, Price, Time to Market, Flexibility).</p>
+    <p>4. راجعي Pull-UP vs Pull-Down logic وكود الـ debouncing.</p>
+    <p>5. راجعي Hard vs Soft Real-Time بأمثلة.</p>
+    <p>6. حلّي أسئلة الامتحانات السابقة زي ما أنتِ في الامتحان.</p>
+  </div>
+</div>
+
+<!-- ===================== SECTION 15 ===================== -->
+<div class="section" id="s15">
+  <div class="section-header">
+    <div class="section-num">15</div>
+    <div>
+      <div class="section-title">🎯 Cheat Sheet النهائي</div>
+      <div class="section-subtitle">كل حاجة مهمة في مكان واحد</div>
+    </div>
+  </div>
+
+  <div class="cheat-grid">
+    <div class="cheat-card">
+      <h4>🔢 أرقام Arduino Uno</h4>
+      <ul>
+        <li>MCU: ATmega328P</li>
+        <li>Clock: <strong>16 MHz</strong></li>
+        <li>Flash: <strong>32 KB</strong></li>
+        <li>SRAM: <strong>2 KB</strong></li>
+        <li>EEPROM: <strong>1 KB</strong></li>
+        <li>Digital I/O: <strong>14 pins</strong></li>
+        <li>Analog In: <strong>6 (A0-A5)</strong></li>
+        <li>ADC: <strong>10-bit</strong></li>
+        <li>Operating V: <strong>5V</strong></li>
+        <li>Max pin current: <strong>40 mA</strong></li>
+        <li>Language: <strong>C++</strong></li>
+      </ul>
+    </div>
+    <div class="cheat-card">
+      <h4>🔢 أرقام ESP8266 NodeMCU</h4>
+      <ul>
+        <li>CPU: Xtensa LX106 (32-bit)</li>
+        <li>Clock: <strong>80-160 MHz</strong></li>
+        <li>RAM: <strong>80 KB</strong></li>
+        <li>Flash: <strong>4 MB</strong></li>
+        <li>ADC: <strong>1 channel فقط (A0)</strong></li>
+        <li>ADC: 10-bit</li>
+        <li>Operating V: <strong>3.3V</strong></li>
+        <li>Max pin current: <strong>12 mA</strong></li>
+        <li>Wi-Fi: 802.11 b/g/n</li>
+        <li>GPIO6-11: محجوزة للـ Flash</li>
+        <li>SPI clock: <strong>40 MHz</strong></li>
+        <li>I²C clock: <strong>1 MHz</strong></li>
+      </ul>
+    </div>
+    <div class="cheat-card">
+      <h4>📡 Communication Protocols</h4>
+      <ul>
+        <li>UART: Async, Full-Duplex, 2 wires, P2P</li>
+        <li>USART: Async+Sync, Full-Duplex</li>
+        <li>SPI: Sync, Full-Duplex, 4 wires, M/S</li>
+        <li>I²C/TWI: Sync, Half-Duplex, 2 wires, Multi</li>
+        <li>LIN: Async, Half-Duplex, 1 wire, 16 slaves</li>
+        <li>OWI: Async, 1 wire</li>
+        <li>SPI الأسرع: MBps</li>
+        <li>I²C Standard: 100kHz, Fast: 400kHz</li>
+        <li>I²C arbitration = Non-destructive</li>
+        <li>TWI = I²C (نفس الحاجة)</li>
+      </ul>
+    </div>
+    <div class="cheat-card">
+      <h4>🏗️ ASIC vs FPGA vs GPP vs DSP</h4>
+      <ul>
+        <li>Lowest power → <strong>ASIC</strong></li>
+        <li>Highest power → <strong>GPP</strong></li>
+        <li>Lowest unit price → <strong>ASIC</strong></li>
+        <li>Highest price → <strong>FPGA</strong></li>
+        <li>Easiest implementation → <strong>GPP</strong></li>
+        <li>Hardest implementation → <strong>ASIC</strong></li>
+        <li>Fastest time to market → <strong>GPP</strong></li>
+        <li>Slowest time to market → <strong>ASIC</strong></li>
+        <li>Reprogrammable → <strong>FPGA</strong></li>
+        <li>Signal processing → <strong>DSP</strong></li>
+        <li>NOT DSP feature → Von Neumann</li>
+      </ul>
+    </div>
+    <div class="cheat-card">
+      <h4>⏱️ Real-Time Systems</h4>
+      <ul>
+        <li>Hard RT: Deadline strict → Catastrophic if missed</li>
+        <li>Soft RT: Deadline important → Performance degrades</li>
+        <li>Hard RT examples: Airbag, Pacemaker, Flight control</li>
+        <li>Soft RT examples: Video streaming, Email</li>
+        <li>Real-Time ≠ Fast (= Predictable)</li>
+        <li>RTOS that guarantees → Hard Real-Time RTOS</li>
+        <li>Deadline = time by which task must complete</li>
+      </ul>
+    </div>
+    <div class="cheat-card">
+      <h4>💾 Memory</h4>
+      <ul>
+        <li>Volatile: RAM (SRAM, DRAM)</li>
+        <li>Non-Volatile: ROM, Flash, EEPROM</li>
+        <li>SRAM: Faster, Flip-Flops, no refresh</li>
+        <li>DRAM: Cheaper, Capacitors, needs refresh</li>
+        <li>ROM: Programmed at manufacture</li>
+        <li>PROM: One-Time Programmable</li>
+        <li>EPROM: Erase with UV Light</li>
+        <li>EEPROM: Erase electrically (Byte)</li>
+        <li>Flash: Erase electrically (Block) → faster</li>
+        <li>ATmega: Flash=Code, SRAM=Variables, EEPROM=Settings</li>
+      </ul>
+    </div>
+    <div class="cheat-card">
+      <h4>🔘 Button Logic</h4>
+      <ul>
+        <li>Pull-DOWN → HIGH when pressed</li>
+        <li>Pull-UP → LOW when pressed (عكسي!)</li>
+        <li>INPUT_PULLUP = internal pull-up</li>
+        <li>Detect Pull-UP: if(!digitalRead(pin))</li>
+        <li>Debounce Button 1 (pull-down): while(digitalRead(pin));</li>
+        <li>Debounce Button 2 (pull-up): while(!digitalRead(pin));</li>
+        <li>t_delay = 1000/f (Hz to ms)</li>
+        <li>Gray Code: 1 bit changes at a time</li>
+        <li>Gray = counter ^ (counter >> 1)</li>
+      </ul>
+    </div>
+    <div class="cheat-card">
+      <h4>🧠 CPU Components</h4>
+      <ul>
+        <li>CPU = Control Unit + ALU</li>
+        <li>ALU = Arithmetic + Logic operations</li>
+        <li>CU = Controls instruction sequence</li>
+        <li>PC = Next instruction address</li>
+        <li>IR = Current instruction</li>
+        <li>Zero Flag: result = 0</li>
+        <li>Carry Flag: overflow/borrow</li>
+        <li>Cycle: Fetch → Decode → Execute</li>
+        <li>Brain of computer = CPU</li>
+        <li>DMA = Direct Memory Access (no CPU)</li>
+        <li>JTAG = Debug + Program + Test</li>
+      </ul>
+    </div>
+    <div class="cheat-card">
+      <h4>❓ أسئلة شفوي محتملة</h4>
+      <ul>
+        <li>ما الفرق بين UART و USART؟</li>
+        <li>ليه I²C أحسن من SPI في بعض الحالات؟</li>
+        <li>ما الفرق بين Hard و Soft Real-Time؟</li>
+        <li>ليه Flash و مش EEPROM للكود؟</li>
+        <li>إيه الفرق بين ASIC و FPGA؟</li>
+        <li>ليه Pull-UP عكسي في القراءة؟</li>
+        <li>إيه هو الـ Debouncing ولماذا؟</li>
+        <li>ما الفرق بين DMA و CPU Transfer؟</li>
+        <li>إيه هو الـ JTAG ولماذا مهم؟</li>
+        <li>ما الفرق بين Kernel و OS؟</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="numbers-box" style="margin-top:30px;">
+    <h3>⚡ جمل تتحفظها حرفياً</h3>
+    <div class="num-row"><span class="num-label">Real-Time definition</span><span class="num-value">"Predictable, not just Fast"</span></div>
+    <div class="num-row"><span class="num-label">Hard RT consequence</span><span class="num-value">"Catastrophic failure"</span></div>
+    <div class="num-row"><span class="num-label">UART type</span><span class="num-value">"Asynchronous, Full-Duplex, P2P"</span></div>
+    <div class="num-row"><span class="num-label">I²C wires</span><span class="num-value">"SDA + SCL = 2 wires only"</span></div>
+    <div class="num-row"><span class="num-label">SPI wires</span><span class="num-value">"MOSI, MISO, SCK, SS = 4 wires"</span></div>
+    <div class="num-row"><span class="num-label">TWI = I²C</span><span class="num-value">"Same protocol, different name"</span></div>
+    <div class="num-row"><span class="num-label">Flash in Arduino</span><span class="num-value">"Stores the program/firmware"</span></div>
+    <div class="num-row"><span class="num-label">ASIC advantage</span><span class="num-value">"Lowest power, best mass production"</span></div>
+    <div class="num-row"><span class="num-label">DSP NOT feature</span><span class="num-value">"Von Neumann architecture"</span></div>
+    <div class="num-row"><span class="num-label">Gray Code property</span><span class="num-value">"Only 1 bit changes between consecutive values"</span></div>
+    <div class="num-row"><span class="num-label">ESP8266 ADC</span><span class="num-value">"Only 1 ADC channel (A0)"</span></div>
+  </div>
+
+  <div class="callout callout-tip" style="margin-top:30px;">
+    <div class="callout-title">✅ نصيحة أخيرة</div>
+    <p>في الامتحان، لو في سؤال بيقولك "MOST APPROPRIATE answer" — ابحثي عن الإجابة الأكثر دقة وشمولاً. لو كلهم صح جزئياً، الإجابة هي E (ALL). لو مفيش إجابة صح، الإجابة F (NONE).</p>
+    <p>اقرئي كل اختيار بعناية — الدكتور بيغير كلمة واحدة بس تعكس المعنى (زي "Synchronous" بدل "Asynchronous").</p>
+  </div>
+</div>
+
+<div style="text-align:center; padding: 50px 20px; color: var(--text-muted); border-top: 1px solid var(--border);">
+  <p style="font-size:1.1rem; color: var(--accent);">بالتوفيق في الامتحان! 🌟</p>
+  <p>Alexandria University — Embedded Systems — Spring 2024/2025</p>
+</div>
+
+<button class="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+</body>
+</html>
